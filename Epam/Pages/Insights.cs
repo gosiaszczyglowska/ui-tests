@@ -1,19 +1,14 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
 using System;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.DevTools.V124.Network;
-
 
 namespace PageObject.Pages
 {
     internal class Insights
     {
         private readonly IWebDriver driver;
-        private  Waits waits;
-        private Actions actions;
+        private readonly Waits waits;
+        private readonly Actions actions;
 
         private readonly By sliderRightArrowLocator = By.XPath("//button[@type='button' and @class='slider__right-arrow slider-navigation-arrow']");
         private readonly By firstSliderLocator = By.XPath("(//div[@class='slider section'])[1]");
@@ -38,16 +33,12 @@ namespace PageObject.Pages
 
         public void ReadArticleAndCompareTitles()
         {
-            // Wait for the carousel element (first slider) to be visible
             IWebElement firstSlider = waits.WaitUntilVisible(firstSliderLocator, 10);
-
             IWebElement activeSlide = firstSlider.FindElement(activeSlideLocator);
             IWebElement slideTextElement = activeSlide.FindElement(slideTextElementLocator);
             string slideText = slideTextElement.Text.Trim();
 
-
-            Console.WriteLine("Text from the active slide:");
-            Console.WriteLine(slideText);
+            Console.WriteLine($"Text from the active slide:{slideText}");
 
             IWebElement readMoreButton = activeSlide.FindElement(readMoreButtonLocator);
             readMoreButton.Click();
@@ -55,13 +46,10 @@ namespace PageObject.Pages
             IWebElement articlefirstSection = driver.FindElement(articleFirstSectionLocator);
             IWebElement articleTitleElement = articlefirstSection.FindElement(articleTitleElementLocator);
 
-
             string titleElement = articleTitleElement.Text.Trim();
-            Console.WriteLine("Text from the title:");
-            Console.WriteLine(titleElement);
+            Console.WriteLine($"Text from the title:{titleElement}");
 
             Assert.True(slideText.Equals(titleElement));
         }
-
     }
 }

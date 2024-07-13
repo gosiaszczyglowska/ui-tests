@@ -1,9 +1,6 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
 using OpenQA.Selenium.Support.UI;
-using SeleniumExtras.WaitHelpers;
 using System;
-using System.Runtime.CompilerServices;
 using System.Threading;
 
 
@@ -12,9 +9,9 @@ namespace PageObject.Pages
     internal class Careers
     {
         private readonly IWebDriver driver;
-        private Waits waits;
-        private Scripts scripts;
-        private Actions actions;
+        private readonly Waits waits;
+        private readonly Scripts scripts;
+        private readonly Actions actions;
 
         private readonly By searchPanelLocator = By.Id("jobSearchFilterForm");
         private readonly By keywordFieldLocator = By.Id("new_form_job_search-keyword");
@@ -26,7 +23,6 @@ namespace PageObject.Pages
         private readonly By newFirstItemTitleLocator = By.XPath("//*[@id='main']//ul/li[1]//h5/a");
         private readonly By resulItem1Locator = By.XPath("//*[@id='main']//ul/li[1]");
         private readonly By viewAndApplyButtonLocator = By.XPath("//a[contains(text(), 'View and apply')]");
-
 
         public Careers(IWebDriver driver)
         {
@@ -45,9 +41,6 @@ namespace PageObject.Pages
 
             scripts.closeAutocompleteDropdown();
 
-            Thread.Sleep(3000);
-
-            //click on the dropdown input, click left control to move the dropdown up
             IWebElement locationsDropdown = searchPanel.FindElement(locationsDropdownLocator);
             locationsDropdown.Click();
 
@@ -64,28 +57,35 @@ namespace PageObject.Pages
         }
         public void SortPositionsByDate()
         {
-
             IWebElement sortByDate = waits.WaitUntilVisible(sortByDateLocator, 5);
 
             string initialFirstItemTitle = driver.FindElement(initialFirstItemTitleLocator).Text;
-            Console.WriteLine(initialFirstItemTitle);
-
+            Console.WriteLine($"Initial first item title is: {initialFirstItemTitle}");
             sortByDate.Click();
 
+            VerifyIfSortingWasDone(initialFirstItemTitle);
+
+            string newFirstItemTitle = driver.FindElement(newFirstItemTitleLocator).Text;
+            Console.WriteLine($"First item title after sorting is: {newFirstItemTitle}");
+        }
+        public void ApplyForFirstPosition()
+        {
+            IWebElement resulItem1 = driver.FindElement(resulItem1Locator);
+            IWebElement viewAndApplyButton = resulItem1.FindElement(viewAndApplyButtonLocator);
+            viewAndApplyButton.Click();
+        }
+
+        public void VerifyIfSortingWasDone(string initialFirstItemTitle)
+        {
             Thread.Sleep(8000);
 
-            waits.Wait(3);
             WebDriverWait waitUntilSorted = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
-
-            //checking if sorting was done - (if 1st position was changed.
-            //if it wasnt changed after 3 seconds, assuming that sorting was done
-            //but the same position is 1st on the list again)
             try
             {
                 bool isSorted = waitUntilSorted.Until(driver =>
                 {
                     string newFirstItemTitle = driver.FindElement(newFirstItemTitleLocator).Text;
-                    Console.WriteLine(newFirstItemTitle);
+                    
                     return newFirstItemTitle != initialFirstItemTitle;
                 });
 
@@ -98,18 +98,6 @@ namespace PageObject.Pages
             {
                 Console.WriteLine("Its the same position after sorting");
             }
-
-            string newFirstItemTitle = driver.FindElement(newFirstItemTitleLocator).Text;
-            Console.WriteLine(newFirstItemTitle);
         }
-        public void ApplyForFirstPosition()
-        {
-            //Clicking on the 1st search result's "View and apply" button
-            IWebElement resulItem1 = driver.FindElement(resulItem1Locator);
-            IWebElement viewAndApplyButton = resulItem1.FindElement(viewAndApplyButtonLocator);
-            viewAndApplyButton.Click();
-        }
-
-
     }
 }

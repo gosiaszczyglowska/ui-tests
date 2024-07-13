@@ -1,10 +1,5 @@
 ﻿using OpenQA.Selenium;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PageObject.Pages
 {
@@ -23,7 +18,6 @@ namespace PageObject.Pages
 
         public void ClickAndSendKeys(IWebElement element, int pauseTime, string query)
         {
-            //Seach Input
             new OpenQA.Selenium.Interactions.Actions(driver)
             .Click(element)
             .Pause(TimeSpan.FromSeconds(pauseTime))
@@ -31,10 +25,10 @@ namespace PageObject.Pages
             .Perform();
         }
 
-        public void MoveToElement(IWebElement element)
+        public void ScrollToElement(IWebElement element)
         {
             new OpenQA.Selenium.Interactions.Actions(driver)
-            .MoveToElement(element)
+            .ScrollToElement(element)
             .Perform();
         }
 
@@ -44,6 +38,5 @@ namespace PageObject.Pages
             .SendKeys(key)
             .Perform();
         }
-
     }
 }

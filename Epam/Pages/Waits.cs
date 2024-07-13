@@ -3,9 +3,6 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PageObject.Pages
 {
@@ -23,6 +20,18 @@ namespace PageObject.Pages
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
             return wait.Until(ExpectedConditions.ElementIsVisible(locator));
+        }
+
+        public IWebElement WaitUntilClickable(By locator, int time) 
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
+            return wait.Until(ExpectedConditions.ElementToBeClickable(locator));
+        }
+
+        public IReadOnlyCollection<IWebElement> WaitUntilElementsArePresent(By locator, int time)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
+            return wait.Until(driver => driver.FindElements(locator));
         }
     }
 }

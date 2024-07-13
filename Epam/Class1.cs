@@ -1,12 +1,9 @@
-﻿using System.Linq;
-using System;
+﻿using System;
+using System.IO;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
-using System.Threading;
 using PageObject.Pages;
-using OpenQA.Selenium.DevTools.V124.Network;
 
 namespace PageObject
 {
@@ -29,7 +26,6 @@ namespace PageObject
             options.AddUserProfilePreference("download.default_directory", downloadDirectory);
             options.AddUserProfilePreference("download.prompt_for_download", false);
 
-            // Check if headless mode should be enabled
             bool headless = Environment.GetEnvironmentVariable("HEADLESS_MODE") == "true";
             if (headless)
             {
@@ -61,7 +57,6 @@ namespace PageObject
             driver.Quit();
         }
 
-
         [TestCase("Java", "All Locations")]
         [TestCase("Python", "All Cities in Poland")]
         public void PositionSearch(string language, string location)
@@ -73,7 +68,6 @@ namespace PageObject
 
             waits.Wait(5);
 
-            //checking if searched language is on the page
             bool isTextPresent = driver.FindElements(By.XPath($"//*[contains(text(), {language})]")).Count > 0;
             Assert.IsTrue(isTextPresent, $"Text {language} not found on the page.");
         }
@@ -83,16 +77,21 @@ namespace PageObject
         [TestCase("Automation")]
         public void GlobalSearch(string query)
         {
-            Thread.Sleep(3000);
             indexPage.Search(query);
-            indexPage.ResultsLinksContainQuery(query);
+            indexPage.ValidateSearchResults(query);
         }
 
-        [TestCase("EPAM_Corporate_Overview_Q4_EOY.pdf")]
-        public void DownloadCheck(string downloadedFileName)
+        [TestCase("EPAM_Corporate_Overview_Q4_EOY.pdf", @"C:\TestDownload")]
+        public void DownloadCheck(string downloadedFileName, string downloadDirectory)
         {
             navigation.AboutTab();
-            about.DownloadOverviewFile(downloadedFileName);
+            about.DownloadOverviewFile(downloadedFileName, downloadDirectory);
+            
+            string downloadedFilePath = Path.Combine(downloadDirectory, downloadedFileName);
+            
+            Assert.IsTrue(File.Exists(downloadedFilePath));
+            
+            about.CheckIfFileExistsAndDelete(downloadedFilePath);
         }
 
         [Test]

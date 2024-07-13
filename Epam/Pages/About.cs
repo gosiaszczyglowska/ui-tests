@@ -1,17 +1,14 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Interactions;
+﻿using OpenQA.Selenium;
 using System;
 using System.IO;
 using System.Threading;
-
 
 namespace PageObject.Pages
 {
     internal class About
     {
         private readonly IWebDriver driver;
-        private Actions actions;
+        private readonly Actions actions;
 
         private readonly By downloadButtonLocator = By.XPath("//span[contains(@class, 'button__content') and contains(text(), 'DOWNLOAD')]");
        
@@ -21,24 +18,17 @@ namespace PageObject.Pages
             this.actions = new Actions(driver);
         }
 
-        public void DownloadOverviewFile(string downloadedFileName)
+        public void DownloadOverviewFile(string downloadedFileName, string downloadDirectory)
         {
             var downloadButton = driver.FindElement(downloadButtonLocator);
-            actions.MoveToElement(downloadButton);
+            actions.ScrollToElement(downloadButton);
          
             downloadButton.Click();
             Thread.Sleep(5000);
-
-            // Path to the downloaded file
-            string downloadDirectory = @"C:\TestDownload";
-
-            // Construct the full path to the downloaded file
-            string downloadedFilePath = Path.Combine(downloadDirectory, downloadedFileName);
-
-            //Validation
-            Assert.IsTrue(File.Exists(downloadedFilePath));
-
-            // Check if the file exists and delete it
+        }
+        
+        public void CheckIfFileExistsAndDelete(string downloadedFilePath)
+        {
             if (File.Exists(downloadedFilePath))
             {
                 try

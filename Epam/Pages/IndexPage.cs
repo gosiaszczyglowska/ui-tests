@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
-using OpenQA.Selenium.DevTools.V124.Network;
-using OpenQA.Selenium.Interactions;
-using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
 
@@ -14,7 +11,8 @@ namespace PageObject.Pages
         private static string Url { get; } = "https://www.epam.com";
 
         private readonly IWebDriver driver;
-        private Actions actions;
+        private readonly Actions actions;
+        private readonly Waits waits;
 
         private readonly By acceptCookiesButtonLocator = By.Id("onetrust-accept-btn-handler");
         private readonly By searchIconLocator = By.ClassName("dark-iconheader-search__search-icon");
@@ -27,6 +25,7 @@ namespace PageObject.Pages
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
             this.actions = new Actions(driver);
+            this.waits = new Waits(driver);
         }
 
         public IndexPage Open() 
@@ -37,31 +36,17 @@ namespace PageObject.Pages
 
         public void AcceptCookies() 
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-
-            IWebElement AcceptCookiesButton = wait.Until(driver =>
-            {
-                var element = driver.FindElement(acceptCookiesButtonLocator);
-                return (element != null && element.Displayed && element.Enabled) ? element : null;
-            });
+            IWebElement AcceptCookiesButton = waits.WaitUntilClickable(acceptCookiesButtonLocator, 10);
             AcceptCookiesButton.Click();
-
+            waits.Wait(5);
         }
 
         public void Search(string query)
         {
-            //Clicking Search icon
             var searchIcon = driver.FindElement(searchIconLocator);
             searchIcon.Click();
 
-            //Waiting for Search Panel
-            var searchPanelWait = new WebDriverWait(driver, TimeSpan.FromSeconds(2))
-            {
-                PollingInterval = TimeSpan.FromSeconds(0.25),
-                Message = "Search panel was not found"
-            };
-
-            var searchPanel = searchPanelWait.Until(driver => driver.FindElement(searchPanelLocator));
+            IWebElement searchPanel = waits.WaitUntilVisible(searchPanelLocator, 5);
             var searchInput = searchPanel.FindElement(searchInputLocator);
 
             actions.ClickAndSendKeys(searchInput,1,query);
@@ -70,21 +55,16 @@ namespace PageObject.Pages
             findButton.Click();
         }
 
-        public void ResultsLinksContainQuery(string query)
+        public void ValidateSearchResults(string query)
         {
-            //Waiting for results
-            var searchResultsWait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+        var searchResultLinks = waits.WaitUntilElementsArePresent(resultsLinksLocator, 10);
 
-            // Assuming search results are displayed as a list of anchor elements (<a>)
-            var searchResultLinks = searchResultsWait.Until(driver =>
-                driver.FindElements(resultsLinksLocator));
+        var linksContainQuery = searchResultLinks.All(link =>
+            link.Text.Contains(query, StringComparison.OrdinalIgnoreCase) || 
+            link.GetAttribute("href").Contains(query, StringComparison.OrdinalIgnoreCase));
 
-            // Validating links using LINQ
-            var linksContainQuery = searchResultLinks.All(link =>
-                link.Text.Contains(query) || link.GetAttribute("href").Contains(query));
-
-            // Assertion for NUnit test case
-            Assert.IsTrue(linksContainQuery, $"Not all links contain the query term '{query}'");
+        Assert.IsTrue(linksContainQuery, $"Not all links contain the query term '{query}'");
         }
+    
     }
 }

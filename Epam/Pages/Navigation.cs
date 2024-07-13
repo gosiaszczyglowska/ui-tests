@@ -1,5 +1,4 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.DevTools.V124.Network;
 using System;
 
 namespace PageObject.Pages
@@ -14,7 +13,6 @@ namespace PageObject.Pages
 
         public Navigation(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
       
-        // Click on Careers tab
         public void CareersTab()
         {
             var careersTab = driver.FindElement(careersTabLocator);
