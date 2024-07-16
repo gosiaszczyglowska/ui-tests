@@ -6,20 +6,9 @@ using System.Linq;
 
 namespace PageObject.Pages
 {
-    internal class IndexPage
+    public class IndexPage : TestBase
     {
         private static string Url { get; } = "https://www.epam.com";
-
-        private readonly IWebDriver driver;
-        private readonly Actions actions;
-        private readonly Waits waits;
-
-        private readonly By acceptCookiesButtonLocator = By.Id("onetrust-accept-btn-handler");
-        private readonly By searchIconLocator = By.ClassName("dark-iconheader-search__search-icon");
-        private readonly By searchPanelLocator = By.ClassName("header-search__panel");
-        private readonly By searchInputLocator = By.Name("q");
-        private readonly By findButtonLocator = By.XPath("//button[contains(span/text(), 'Find')]");
-        private readonly By resultsLinksLocator = By.ClassName("search-results__title-link");
 
         public IndexPage(IWebDriver driver)
         {
@@ -34,30 +23,46 @@ namespace PageObject.Pages
             return this;
         }
 
-        public void AcceptCookies() 
+        public void AcceptCookies()
         {
-            IWebElement AcceptCookiesButton = waits.WaitUntilClickable(acceptCookiesButtonLocator, 10);
+            Log.Info("Accepting cookies...");
+            IWebElement AcceptCookiesButton = waits.WaitUntilClickable(Locators.IndexPageLocators.acceptCookiesButtonLocator, 20);
             AcceptCookiesButton.Click();
             waits.Wait(5);
         }
 
-        public void Search(string query)
+
+        public void StepSearchQuery(string query)
         {
-            var searchIcon = driver.FindElement(searchIconLocator);
+            Log.Info($"Searching for a query {query}");
+            ClickSearchIcon();
+            InputSearchQuery(query);
+            ClickFindButton();
+        }
+
+        public void ClickSearchIcon()
+        {
+            var searchIcon = driver.FindElement(Locators.IndexPageLocators.searchIconLocator);
             searchIcon.Click();
+        }
+        public void InputSearchQuery(string query)
+        {
+            IWebElement searchPanel = waits.WaitUntilVisible(Locators.IndexPageLocators.searchPanelLocator, 5);
+            var searchInput = searchPanel.FindElement(Locators.IndexPageLocators.searchInputLocator);
 
-            IWebElement searchPanel = waits.WaitUntilVisible(searchPanelLocator, 5);
-            var searchInput = searchPanel.FindElement(searchInputLocator);
-
-            actions.ClickAndSendKeys(searchInput,1,query);
-            
-            var findButton = searchPanel.FindElement(findButtonLocator);
+            actions.ClickAndSendKeys(searchInput, 1, query);
+        }
+        public void ClickFindButton()
+        {
+            IWebElement searchPanel = waits.WaitUntilVisible(Locators.IndexPageLocators.searchPanelLocator, 5);
+            var findButton = searchPanel.FindElement(Locators.IndexPageLocators.findButtonLocator);
             findButton.Click();
         }
 
-        public void ValidateSearchResults(string query)
+        public void StepValidateSearchResults(string query)
         {
-        var searchResultLinks = waits.WaitUntilElementsArePresent(resultsLinksLocator, 10);
+            Log.Info("Checking if all search results links contain query...");
+        var searchResultLinks = waits.WaitUntilElementsArePresent(Locators.IndexPageLocators.resultsLinksLocator, 10);
 
         var linksContainQuery = searchResultLinks.All(link =>
             link.Text.Contains(query, StringComparison.OrdinalIgnoreCase) || 
@@ -65,6 +70,16 @@ namespace PageObject.Pages
 
         Assert.IsTrue(linksContainQuery, $"Not all links contain the query term '{query}'");
         }
+        public bool CheckSearchResultsContainQuery(string query)
+        {
+            Log.Info("Checking if all search results links contain query...");
+            var searchResultLinks = waits.WaitUntilElementsArePresent(Locators.IndexPageLocators.resultsLinksLocator, 10);
+
+            return searchResultLinks.All(link =>
+                link.Text.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                link.GetAttribute("href").Contains(query, StringComparison.OrdinalIgnoreCase));
+        }
+
     
     }
 }

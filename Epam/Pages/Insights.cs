@@ -1,23 +1,12 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace PageObject.Pages
 {
-    internal class Insights
+    public class Insights :TestBase
     {
-        private readonly IWebDriver driver;
-        private readonly Waits waits;
-        private readonly Actions actions;
-
-        private readonly By sliderRightArrowLocator = By.XPath("//button[@type='button' and @class='slider__right-arrow slider-navigation-arrow']");
-        private readonly By firstSliderLocator = By.XPath("(//div[@class='slider section'])[1]");
-        private readonly By activeSlideLocator = By.XPath(".//*[@class='owl-item active' and @aria-hidden='false']");
-        private readonly By slideTextElementLocator = By.XPath(".//p[@class='scaling-of-text-wrapper']");
-        private readonly By readMoreButtonLocator = By.TagName("a");
-        private readonly By articleFirstSectionLocator = By.XPath("//main[@id='main']//div[@class='section'][1]");
-        private readonly By articleTitleElementLocator = By.XPath("//div[contains(@class, 'column-control')]//div[contains(@class, 'text')]");
-
         public Insights(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
@@ -27,29 +16,49 @@ namespace PageObject.Pages
 
         public void SwipeToTheThirdSlide()
         {
-            var sliderRightArrow = driver.FindElement(sliderRightArrowLocator);
+            Log.Info("Swipping to the 3rd slide");
+            var sliderRightArrow = driver.FindElement(Locators.InsightsLocators.sliderRightArrowLocator);
             actions.Click2Times(sliderRightArrow);
         }
 
-        public void ReadArticleAndCompareTitles()
+        public void StepReadArticleAndCompareTitles()
         {
-            IWebElement firstSlider = waits.WaitUntilVisible(firstSliderLocator, 10);
-            IWebElement activeSlide = firstSlider.FindElement(activeSlideLocator);
-            IWebElement slideTextElement = activeSlide.FindElement(slideTextElementLocator);
-            string slideText = slideTextElement.Text.Trim();
+            Log.Info("Comparing Title of the slide with the Title of the Article");
 
-            Console.WriteLine($"Text from the active slide:{slideText}");
+            string slideText = GetTitleFromSlide();
+            CLickReadMoreOnActiveSlide();
+            string titleElement = GetTitleFromArticle();
 
-            IWebElement readMoreButton = activeSlide.FindElement(readMoreButtonLocator);
-            readMoreButton.Click();
-
-            IWebElement articlefirstSection = driver.FindElement(articleFirstSectionLocator);
-            IWebElement articleTitleElement = articlefirstSection.FindElement(articleTitleElementLocator);
-
-            string titleElement = articleTitleElement.Text.Trim();
-            Console.WriteLine($"Text from the title:{titleElement}");
+            Console.WriteLine($"Text from the active slide: {slideText}");
+            Console.WriteLine($"Text from the title: {titleElement}");
 
             Assert.True(slideText.Equals(titleElement));
+        }
+
+        public string GetTitleFromSlide()
+        {
+            Log.Info("Saving Slide Title as SLideTextElement...");
+            IWebElement firstSlider = waits.WaitUntilVisible(Locators.InsightsLocators.firstSliderLocator, 10);
+            IWebElement activeSlide = firstSlider.FindElement(Locators.InsightsLocators.activeSlideLocator);
+            IWebElement slideTextElement = activeSlide.FindElement(Locators.InsightsLocators.slideTextElementLocator);
+            return slideTextElement.Text.Trim();
+        }
+
+        public void CLickReadMoreOnActiveSlide() 
+        {
+            Log.Info("Clicking Read More button...");
+            IWebElement firstSlider = waits.WaitUntilVisible(Locators.InsightsLocators.firstSliderLocator, 10);
+            IWebElement activeSlide = firstSlider.FindElement(Locators.InsightsLocators.activeSlideLocator);
+            IWebElement readMoreButton = activeSlide.FindElement(Locators.InsightsLocators.readMoreButtonLocator);
+            readMoreButton.Click();
+        }
+
+        public string GetTitleFromArticle()
+        {
+            Log.Info("Saving Article Title as ArticleTitleElement...");
+            IWebElement articleFirstSection = driver.FindElement(Locators.InsightsLocators.articleFirstSectionLocator);
+            IWebElement articleTitleElement = articleFirstSection.FindElement(Locators.InsightsLocators.articleTitleElementLocator);
+            return articleTitleElement.Text.Trim();
         }
     }
 }

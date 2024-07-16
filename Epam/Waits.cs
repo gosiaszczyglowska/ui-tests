@@ -3,10 +3,11 @@ using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 
-namespace PageObject.Pages
+namespace PageObject
 {
-    internal class Waits
+    public class Waits
     {
         private readonly IWebDriver driver;
         public Waits(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
@@ -22,7 +23,7 @@ namespace PageObject.Pages
             return wait.Until(ExpectedConditions.ElementIsVisible(locator));
         }
 
-        public IWebElement WaitUntilClickable(By locator, int time) 
+        public IWebElement WaitUntilClickable(By locator, int time)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
             return wait.Until(ExpectedConditions.ElementToBeClickable(locator));

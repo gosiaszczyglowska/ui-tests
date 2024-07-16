@@ -1,29 +1,15 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.DevTools.V124.Network;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
 
 namespace PageObject.Pages
 {
-    internal class Careers
+    public class Careers : TestBase
     {
-        private readonly IWebDriver driver;
-        private readonly Waits waits;
-        private readonly Scripts scripts;
-        private readonly Actions actions;
-
-        private readonly By searchPanelLocator = By.Id("jobSearchFilterForm");
-        private readonly By keywordFieldLocator = By.Id("new_form_job_search-keyword");
-        private readonly By locationsDropdownLocator = By.CssSelector("span.select2-selection__rendered[title='All Cities in Poland']");
-        private readonly By remoteCheckboxLocator = By.ClassName("recruiting-search__filter-label-23");
-        private readonly By findButtonLocator = By.XPath("//*[@id = 'jobSearchFilterForm']/button");
-        private readonly By sortByDateLocator = By.XPath("//*[@class='search-result__sorting-label list' and text()='Date']");
-        private readonly By initialFirstItemTitleLocator = By.XPath("//*[@id='main']//ul/li[1]//h5/a");
-        private readonly By newFirstItemTitleLocator = By.XPath("//*[@id='main']//ul/li[1]//h5/a");
-        private readonly By resulItem1Locator = By.XPath("//*[@id='main']//ul/li[1]");
-        private readonly By viewAndApplyButtonLocator = By.XPath("//a[contains(text(), 'View and apply')]");
-
         public Careers(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
@@ -32,72 +18,105 @@ namespace PageObject.Pages
             this.actions = new Actions(driver);
         }
 
-        public void SearchPosition(string language, string location)
+
+        public void StepSearchPostition(string language, string location)
         {
-            IWebElement searchPanel = driver.FindElement(searchPanelLocator);
-            IWebElement keywordField = searchPanel.FindElement(keywordFieldLocator);        
+            SearchKeyword(language);
+            scripts.closeAutocompleteDropdown();
+            SearchLocation(location);
+            ClickRemoteCheckbox();
+            ClickFindButton();
+        }
+        public void SearchKeyword(string language)
+        {
+            IWebElement searchPanel = driver.FindElement(Locators.CareersLocators.searchPanelLocator);
+            IWebElement keywordField = searchPanel.FindElement(Locators.CareersLocators.keywordFieldLocator);
             keywordField.Click();
             keywordField.SendKeys(language);
-
-            scripts.closeAutocompleteDropdown();
-
-            IWebElement locationsDropdown = searchPanel.FindElement(locationsDropdownLocator);
+        }
+        public void SearchLocation(string location)
+        {
+            IWebElement searchPanel = driver.FindElement(Locators.CareersLocators.searchPanelLocator);
+            IWebElement locationsDropdown = searchPanel.FindElement(Locators.CareersLocators.locationsDropdownLocator);
             locationsDropdown.Click();
 
             actions.SendKey(Keys.LeftControl);
-
             var dropdownOption = driver.FindElement(By.XPath($"//li[contains(text(), '{location}')]"));
             dropdownOption.Click();
-
-            IWebElement remoteCheckbox = searchPanel.FindElement(remoteCheckboxLocator);
+        }
+        public void ClickRemoteCheckbox()
+        {
+            IWebElement searchPanel = driver.FindElement(Locators.CareersLocators.searchPanelLocator);
+            IWebElement remoteCheckbox = searchPanel.FindElement(Locators.CareersLocators.remoteCheckboxLocator);
             remoteCheckbox.Click();
+        }
 
-            IWebElement findButton = searchPanel.FindElement(findButtonLocator);
+        public void ClickFindButton()
+        {
+            IWebElement searchPanel = driver.FindElement(Locators.CareersLocators.searchPanelLocator);
+            IWebElement findButton = searchPanel.FindElement(Locators.CareersLocators.findButtonLocator);
             findButton.Click();
         }
-        public void SortPositionsByDate()
+
+        public void StepSortByDateAndVerify()
         {
-            IWebElement sortByDate = waits.WaitUntilVisible(sortByDateLocator, 5);
-
-            string initialFirstItemTitle = driver.FindElement(initialFirstItemTitleLocator).Text;
+            Log.Info("Sorting Postitions by date...");
+            string initialFirstItemTitle = driver.FindElement(Locators.CareersLocators.initialFirstItemTitleLocator).Text;
             Console.WriteLine($"Initial first item title is: {initialFirstItemTitle}");
-            sortByDate.Click();
-
+            SortByDate();
             VerifyIfSortingWasDone(initialFirstItemTitle);
-
-            string newFirstItemTitle = driver.FindElement(newFirstItemTitleLocator).Text;
+            string newFirstItemTitle = driver.FindElement(Locators.CareersLocators.newFirstItemTitleLocator).Text;
             Console.WriteLine($"First item title after sorting is: {newFirstItemTitle}");
         }
+
+        public void SortByDate()
+        {
+            IWebElement sortByDate = waits.WaitUntilVisible(Locators.CareersLocators.sortByDateLocator, 5);
+            sortByDate.Click();
+        }
+
         public void ApplyForFirstPosition()
         {
-            IWebElement resulItem1 = driver.FindElement(resulItem1Locator);
-            IWebElement viewAndApplyButton = resulItem1.FindElement(viewAndApplyButtonLocator);
+            Log.Info("Opening details of the first position on the list...");
+            IWebElement resulItem1 = driver.FindElement(Locators.CareersLocators.resulItem1Locator);
+            IWebElement viewAndApplyButton = resulItem1.FindElement(Locators.CareersLocators.viewAndApplyButtonLocator);
             viewAndApplyButton.Click();
         }
 
         public void VerifyIfSortingWasDone(string initialFirstItemTitle)
         {
             Thread.Sleep(8000);
-
+            Log.Info("Verifying if sorting was done...");
             WebDriverWait waitUntilSorted = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
             try
             {
                 bool isSorted = waitUntilSorted.Until(driver =>
                 {
-                    string newFirstItemTitle = driver.FindElement(newFirstItemTitleLocator).Text;
+                    string newFirstItemTitle = driver.FindElement(Locators.CareersLocators.newFirstItemTitleLocator).Text;
+                    Log.Info("Sorting was done");
                     
                     return newFirstItemTitle != initialFirstItemTitle;
+
                 });
 
                 if (!isSorted)
                 {
+                    Log.Info("Sorting was not done.");
                     Console.WriteLine("The list was not sorted within 3 seconds. Proceeding with the initial order.");
                 }
             }
-            catch (WebDriverTimeoutException)
+            catch (WebDriverTimeoutException ex)
             {
-                Console.WriteLine("Its the same position after sorting");
+                Log.Error(ex);
+                Log.Info("It's the same position after sorting");
+                //Console.WriteLine("Its the same position after sorting");
             }
+
+        }
+        
+        public bool IsLanguagePresent(string language)
+        {
+            return driver.FindElements(By.XPath($"//*[contains(text(), '{language}')]")).Count > 0;
         }
     }
 }
