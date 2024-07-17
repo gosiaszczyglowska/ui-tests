@@ -21,7 +21,6 @@ namespace PageObject.Pages
             var downloadButton = driver.FindElement(Locators.AboutLocators.downloadButtonLocator);
             scripts.ScrollToElement(downloadButton);
             downloadButton.Click();
-            Thread.Sleep(5000);
         }
         
         public void DeleteFile(string downloadedFilePath)

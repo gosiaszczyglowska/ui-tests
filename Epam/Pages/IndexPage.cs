@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
 
@@ -26,9 +27,8 @@ namespace PageObject.Pages
         public void AcceptCookies()
         {
             Log.Info("Accepting cookies...");
-            IWebElement AcceptCookiesButton = waits.WaitUntilClickable(Locators.IndexPageLocators.acceptCookiesButtonLocator, 20);
-            AcceptCookiesButton.Click();
-            waits.Wait(5);
+            IWebElement acceptCookiesButton = waits.WaitForButtonOnToastNotification(Locators.IndexPageLocators.acceptCookiesButtonLocator);
+            acceptCookiesButton.Click();
         }
 
 

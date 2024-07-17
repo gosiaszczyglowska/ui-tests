@@ -46,6 +46,7 @@ namespace PageObject
             about.DownloadOverviewFile();
 
             string downloadedFilePath = Path.Combine(downloadDirectory, downloadedFileName);
+            waits.WaitForFileToDownload(downloadedFilePath, 30);
 
             Assert.IsTrue(File.Exists(downloadedFilePath));
 
