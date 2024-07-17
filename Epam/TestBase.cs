@@ -14,6 +14,7 @@ namespace PageObject
 {
     public class TestBase
     {
+
         protected IWebDriver driver;
         protected IndexPage indexPage;
         protected Waits waits;
@@ -40,7 +41,7 @@ namespace PageObject
         [SetUp]
         public void SetUp()
         {
-            string browserType = Environment.GetEnvironmentVariable("BROWSER_TYPE") ?? "edge";
+            string browserType = Environment.GetEnvironmentVariable("BROWSER_TYPE") ?? "chrome";
             bool headless = Environment.GetEnvironmentVariable("HEADLESS_MODE") == "true";
             string downloadDirectory = @"C:\TestDownload";
 
@@ -51,7 +52,7 @@ namespace PageObject
                 throw new ArgumentException("Download directory is not set in the app.config file.");
             }*/
 
-
+                       
             driver = BrowserFactory.GetDriver(browserType, downloadDirectory, headless);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             driver.Manage().Window.Maximize();
@@ -72,6 +73,10 @@ namespace PageObject
         [TearDown]
         public void TearDown()
         {
+            if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
+            {
+                Screenshot.TakeScreenshot(driver, TestContext.CurrentContext.Test.Name);
+            }
             driver.Quit();
         }
     }

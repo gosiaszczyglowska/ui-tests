@@ -10,10 +10,12 @@ namespace PageObject.Pages
     {
         public About(IWebDriver driver)
         {
-           this.driver = driver ?? throw new ArgumentException(nameof(driver));
+            this.driver = driver ?? throw new ArgumentException(nameof(driver));
             this.actions = new Actions(driver);
             this.scripts = new Scripts(driver);
         }
+
+
 
         public void DownloadOverviewFile()
         {

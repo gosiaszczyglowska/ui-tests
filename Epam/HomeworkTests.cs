@@ -80,5 +80,17 @@ namespace PageObject
             Log.Info("Verifying that Slide Title is the same as Article Title");
             Assert.True(slideText.Equals(titleElement));
         }
+
+        [Test]
+        public void ExampleTest_Failure()
+        {
+            Assert.Fail("This test is expected to fail, triggering the screenshot capture.");
+        }
+
+        [Test]
+        public void ExampleTest_Success()
+        {
+            Assert.Pass("This test will pass, and no screenshot will be taken.");
+        }
     }
 }
