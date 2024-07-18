@@ -39,32 +39,23 @@ namespace PageObject
             Assert.IsTrue(checkSearchResultsContainQuery, $"Not all links contain the query term '{query}'");
         }
 
-        [TestCase("EPAM_Corporate_Overview_Q4_EOY.pdf", @"C:\TestDownload")]
-        public void DownloadCheck(string downloadedFileName, string downloadDirectory)
+
+        [TestCase("EPAM_Corporate_Overview_Q4_EOY.pdf")]
+        public void DownloadCheck(string downloadedFileName)
         {
+            string downloadDirectory = SetUpFixture.AppSettings.DownloadDirectory;
+
             navigation.AboutTab();
             about.DownloadOverviewFile();
 
             string downloadedFilePath = Path.Combine(downloadDirectory, downloadedFileName);
+
             waits.WaitForFileToDownload(downloadedFilePath, 30);
 
             Assert.IsTrue(File.Exists(downloadedFilePath));
 
             about.DeleteFile(downloadedFilePath);
         }
-
-        /*        [TestCase("EPAM_Corporate_Overview_Q4_EOY.pdf")]
-                public void DownloadCheck(string downloadedFileName)
-                {
-                    navigation.AboutTab();
-                    about.DownloadOverviewFile();
-
-                    string downloadedFilePath = Path.Combine(downloadDirectory, downloadedFileName);
-
-                    Assert.IsTrue(File.Exists(downloadedFilePath));
-
-                    about.DeleteFile(downloadedFilePath);
-                }*/
 
 
         [Test]

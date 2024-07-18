@@ -26,6 +26,7 @@ namespace PageObject
         protected Actions actions;
         //public string downloadDirectory;
 
+
         public ILog Log
         {
             get { return LogManager.GetLogger(this.GetType()); }
@@ -43,16 +44,8 @@ namespace PageObject
         {
             string browserType = Environment.GetEnvironmentVariable("BROWSER_TYPE") ?? "chrome";
             bool headless = Environment.GetEnvironmentVariable("HEADLESS_MODE") == "true";
-            string downloadDirectory = @"C:\TestDownload";
+            string downloadDirectory = SetUpFixture.AppSettings.DownloadDirectory;
 
-            //downloadDirectory = ConfigurationManager.AppSettings["DownloadDirectory"];
-
-/*            if (string.IsNullOrEmpty(downloadDirectory))
-            {
-                throw new ArgumentException("Download directory is not set in the app.config file.");
-            }*/
-
-                       
             driver = BrowserFactory.GetDriver(browserType, downloadDirectory, headless);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             driver.Manage().Window.Maximize();
