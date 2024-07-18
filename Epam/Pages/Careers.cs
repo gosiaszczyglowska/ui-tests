@@ -77,26 +77,30 @@ namespace PageObject.Pages
 
         public void ApplyForFirstPosition()
         {
+/*            Log.Info("Downloading Overview File...");
+            var downloadButton = driver.FindElement(Locators.AboutLocators.downloadButtonLocator);
+            scripts.ScrollToElement(downloadButton);
+            downloadButton.Click();
+
+*/
             Log.Info("Opening details of the first position on the list...");
             IWebElement resulItem1 = driver.FindElement(Locators.CareersLocators.resulItem1Locator);
+            scripts.ScrollToElement(resulItem1);
             IWebElement viewAndApplyButton = resulItem1.FindElement(Locators.CareersLocators.viewAndApplyButtonLocator);
             viewAndApplyButton.Click();
         }
 
         public void VerifyIfSortingWasDone(string initialFirstItemTitle)
         {
-            Thread.Sleep(8000);
             Log.Info("Verifying if sorting was done...");
-            WebDriverWait waitUntilSorted = new WebDriverWait(driver, TimeSpan.FromSeconds(3));
+            WebDriverWait waitUntilSorted = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             try
             {
                 bool isSorted = waitUntilSorted.Until(driver =>
                 {
                     string newFirstItemTitle = driver.FindElement(Locators.CareersLocators.newFirstItemTitleLocator).Text;
-                    Log.Info("Sorting was done");
-                    
+                  
                     return newFirstItemTitle != initialFirstItemTitle;
-
                 });
 
                 if (!isSorted)

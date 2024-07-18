@@ -24,7 +24,6 @@ namespace PageObject
 
         private static string SanitizeFileName(string fileName)
         {
-            // Remove invalid characters
             return Regex.Replace(fileName, @"[<>:""/\\|?*\[\]]", "_");
         }
     }
