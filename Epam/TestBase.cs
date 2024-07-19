@@ -24,7 +24,7 @@ namespace PageObject
         protected About about;
         protected Scripts scripts;
         protected Actions actions;
-        //public string downloadDirectory;
+
 
 
         public ILog Log

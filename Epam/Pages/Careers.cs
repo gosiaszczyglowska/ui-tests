@@ -77,12 +77,6 @@ namespace PageObject.Pages
 
         public void ApplyForFirstPosition()
         {
-/*            Log.Info("Downloading Overview File...");
-            var downloadButton = driver.FindElement(Locators.AboutLocators.downloadButtonLocator);
-            scripts.ScrollToElement(downloadButton);
-            downloadButton.Click();
-
-*/
             Log.Info("Opening details of the first position on the list...");
             IWebElement resulItem1 = driver.FindElement(Locators.CareersLocators.resulItem1Locator);
             scripts.ScrollToElement(resulItem1);
