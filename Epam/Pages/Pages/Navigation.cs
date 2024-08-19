@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
 
-namespace PageObject.Pages
+namespace PageObject.Pages.Pages
 {
     public class Navigation
     {
@@ -10,7 +10,7 @@ namespace PageObject.Pages
 
 
         public Navigation(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
-      
+
         public void CareersTab()
         {
             var careersTab = driver.FindElement(Locators.NavigationLocators.careersTabLocator);

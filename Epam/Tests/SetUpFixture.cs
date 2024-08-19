@@ -4,11 +4,12 @@ using NUnit.Framework;
 using log4net.Config;
 using Microsoft.Extensions.Configuration;
 using System.Configuration;
+using PageObject.Utilities;
 
-namespace PageObject
+namespace PageObject.Tests
 {
     [SetUpFixture]
-    public class SetUpFixture  //TODO: let's put SetUpFixture under PageObject.Tests namespace/folder structure
+    public class SetUpFixture  
     {
         public static AppSettings AppSettings { get; private set; }
 

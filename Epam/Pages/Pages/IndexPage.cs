@@ -1,11 +1,12 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using PageObject.Tests;
 using System;
 using System.Linq;
 
 
-namespace PageObject.Pages
+namespace PageObject.Pages.Pages
 {
     public class IndexPage : TestBase
     {
@@ -14,11 +15,11 @@ namespace PageObject.Pages
         public IndexPage(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
-            this.actions = new Actions(driver);
-            this.waits = new Waits(driver);
+            actions = new Scripts.Actions(driver);
+            waits = new Utilities.Waits(driver);
         }
 
-        public IndexPage Open() 
+        public IndexPage Open()
         {
             driver.Url = Url;
             return this;
@@ -63,15 +64,15 @@ namespace PageObject.Pages
                                                             //example ValidateSearchResultsStep
         {
             Log.Info("Checking if all search results links contain query...");
-        var searchResultLinks = waits.WaitUntilElementsArePresent(Locators.IndexPageLocators.resultsLinksLocator, 10);
+            var searchResultLinks = waits.WaitUntilElementsArePresent(Locators.IndexPageLocators.resultsLinksLocator, 10);
 
-        var linksContainQuery = searchResultLinks.All(link =>
-            link.Text.Contains(query, StringComparison.OrdinalIgnoreCase) || 
-            link.GetAttribute("href").Contains(query, StringComparison.OrdinalIgnoreCase));
+            var linksContainQuery = searchResultLinks.All(link =>
+                link.Text.Contains(query, StringComparison.OrdinalIgnoreCase) ||
+                link.GetAttribute("href").Contains(query, StringComparison.OrdinalIgnoreCase));
 
-        Assert.IsTrue(linksContainQuery, $"Not all links contain the query term '{query}'"); //TODO: do not use Assert in PageObject
-                                                                                             //instead return false or null  if the element is not as expected to the test method
-                                                                                             //after that use Assert in the test method
+            Assert.IsTrue(linksContainQuery, $"Not all links contain the query term '{query}'"); //TODO: do not use Assert in PageObject
+                                                                                                 //instead return false or null  if the element is not as expected to the test method
+                                                                                                 //after that use Assert in the test method
         }
         public bool CheckSearchResultsContainQuery(string query)
         {
@@ -83,6 +84,6 @@ namespace PageObject.Pages
                 link.GetAttribute("href").Contains(query, StringComparison.OrdinalIgnoreCase));
         }
 
-    
+
     }
 }

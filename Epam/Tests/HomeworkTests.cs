@@ -4,12 +4,12 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using System.Configuration;
 
-namespace PageObject //TODO: divide classes by projects Tests, Utilities, Pages, Core
+namespace PageObject.Tests
 {
 
     [TestFixture]
 
-    public class HomeworkTests : TestBase  //TODO: let's put HomeworkTests under PageObject.Tests namespace/folder structure
+    public class HomeworkTests : TestBase  
     {
 
         [TestCase("Java", "All Locations")]
@@ -36,7 +36,7 @@ namespace PageObject //TODO: divide classes by projects Tests, Utilities, Pages,
         {
             indexPage.StepSearchQuery(query);
             bool checkSearchResultsContainQuery = indexPage.CheckSearchResultsContainQuery(query);
-            
+
             Assert.IsTrue(checkSearchResultsContainQuery, $"Not all links contain the query term '{query}'");
         }
 

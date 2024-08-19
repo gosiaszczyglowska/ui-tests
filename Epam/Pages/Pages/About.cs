@@ -3,17 +3,18 @@ using System;
 using System.IO;
 using System.Threading;
 using log4net;
+using PageObject.Tests;
 
-namespace PageObject.Pages
+namespace PageObject.Pages.Pages
 {
-    public class About : TestBase   //TODO: let's put all Pages under PageObject.Pages.Pages namespace/folder structure
+    public class About : TestBase   
                                     //do not inherit TestBase here, instead inherit BrowserFactory (refer to the comment on [SetUp] in TestBase class)
     {
         public About(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
-            this.actions = new Actions(driver);
-            this.scripts = new Scripts(driver);
+            actions = new Scripts.Actions(driver);
+            scripts = new Scripts.Scripts(driver);
         }
 
 
@@ -25,10 +26,10 @@ namespace PageObject.Pages
             scripts.ScrollToElement(downloadButton);
             downloadButton.Click();
         }
-        
+
         public void DeleteFile(string downloadedFilePath)
         {
-            
+
             if (File.Exists(downloadedFilePath))
             {
                 try

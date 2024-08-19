@@ -2,7 +2,7 @@
 using System;
 using System.Configuration;
 
-namespace PageObject
+namespace PageObject.Pages.Scripts
 {
     public class Scripts //TODO: let's put Scripts under PageObject.Pages.Scripts namespace/folder structure
     {

@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace PageObject
+namespace PageObject.Utilities
 {
     internal class Screenshot //TODO: let's put Screenshot under PageObject.Utilities namespace/folder structure
     {

@@ -5,12 +5,12 @@ using OpenQA.Selenium;
 using System;
 using System.Configuration;
 
-namespace PageObject
+namespace PageObject.Core
 {
-    public static class BrowserFactory //TODO: let's put BrowserFactory under PageObject.Core namespace/folder structure
+    public static class BrowserFactory 
     {
-        public static IWebDriver GetDriver(string browserType, string downloadDirectory,bool headless) //TODO: the method can be split to smaller methods to increase readability
-                                                                                                       //example: private ReturnChrome method
+        public static IWebDriver GetDriver(string browserType, string downloadDirectory, bool headless) //TODO: the method can be split to smaller methods to increase readability
+                                                                                                        //example: private ReturnChrome method
         {
 
             switch (browserType.ToLower())
@@ -54,6 +54,7 @@ namespace PageObject
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddUserProfilePreference("download.default_directory", downloadDirectory);
             chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
+            chromeOptions.AddArgument("--disable-search-engine-choice-screen");
             if (headless)
             {
                 chromeOptions.AddArgument("--headless");

@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
 
-namespace PageObject
+namespace PageObject.Pages.Scripts
 {
     public class Actions //TODO: let's put Actions under PageObject.Pages.Scripts namespace/folder structure
     {

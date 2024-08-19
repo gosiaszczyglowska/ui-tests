@@ -1,17 +1,18 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
+using PageObject.Tests;
 using System;
 using System.Security.Cryptography.X509Certificates;
 
-namespace PageObject.Pages
+namespace PageObject.Pages.Pages
 {
-    public class Insights :TestBase
+    public class Insights : TestBase
     {
         public Insights(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
-            this.waits = new Waits(driver);
-            this.actions = new Actions(driver);
+            waits = new Utilities.Waits(driver);
+            actions = new Scripts.Actions(driver);
         }
 
         public void SwipeToTheThirdSlide()
@@ -46,7 +47,7 @@ namespace PageObject.Pages
             return slideTextElement.Text.Trim();
         }
 
-        public void CLickReadMoreOnActiveSlide() 
+        public void CLickReadMoreOnActiveSlide()
         {
             Log.Info("Clicking Read More button...");
             IWebElement firstSlider = waits.WaitUntilVisible(Locators.InsightsLocators.firstSliderLocator, 10);

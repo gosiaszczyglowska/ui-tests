@@ -1,21 +1,22 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.DevTools.V124.Network;
 using OpenQA.Selenium.Support.UI;
+using PageObject.Tests;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 
 
-namespace PageObject.Pages
+namespace PageObject.Pages.Pages
 {
     public class Careers : TestBase
     {
         public Careers(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
-            this.waits = new Waits(driver);
-            this.scripts = new Scripts(driver);
-            this.actions = new Actions(driver);
+            waits = new Utilities.Waits(driver);
+            scripts = new Scripts.Scripts(driver);
+            actions = new Scripts.Actions(driver);
         }
 
 
@@ -93,7 +94,7 @@ namespace PageObject.Pages
                 bool isSorted = waitUntilSorted.Until(driver =>
                 {
                     string newFirstItemTitle = driver.FindElement(Locators.CareersLocators.newFirstItemTitleLocator).Text;
-                  
+
                     return newFirstItemTitle != initialFirstItemTitle;
                 });
 
@@ -111,7 +112,7 @@ namespace PageObject.Pages
             }
 
         }
-        
+
         public bool IsLanguagePresent(string language)
         {
             return driver.FindElements(By.XPath($"//*[contains(text(), '{language}')]")).Count > 0;

@@ -5,15 +5,18 @@ using log4net;
 using log4net.Config;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using PageObject.Pages;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using System.Configuration;
 using OpenQA.Selenium.DevTools.V124.Memory;
+using PageObject.Pages.Pages;
+using PageObject.Pages.Scripts;
+using PageObject.Core;
+using PageObject.Utilities;
 
 
-namespace PageObject
+namespace PageObject.Tests
 {
-    public class TestBase  //TODO: let's put TestBase under PageObject.Tests namespace/folder structure
+    public class TestBase  
     {
 
         protected IWebDriver driver;
@@ -31,15 +34,15 @@ namespace PageObject
         public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
                         //and call the method of the class every time you need to log something
         {
-            get { return LogManager.GetLogger(this.GetType()); }
+            get { return LogManager.GetLogger(GetType()); }
         }
 
         [OneTimeSetUp] //TODO: OneTimeSetUp is called two times, first in SetUpFixture than here
                        //instead use  one method in TestBase
         public void BeforeAllTests()
         {
-        XmlConfigurator.Configure(new FileInfo("Log.config"));
-        Console.WriteLine($"Logs will be stored in: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")}");
+            XmlConfigurator.Configure(new FileInfo("Log.config"));
+            Console.WriteLine($"Logs will be stored in: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")}");
         }
 
         [SetUp]
@@ -73,7 +76,7 @@ namespace PageObject
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
             {
-                Screenshot.TakeScreenshot(driver, TestContext.CurrentContext.Test.Name);
+                Utilities.Screenshot.TakeScreenshot(driver, TestContext.CurrentContext.Test.Name);
             }
             driver.Quit(); // add driver.Close();
 

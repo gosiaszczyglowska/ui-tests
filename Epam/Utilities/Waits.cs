@@ -8,9 +8,9 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 
-namespace PageObject
+namespace PageObject.Utilities
 {
-    public class Waits  //TODO: let's put Waits under PageObject.Utilities namespace/folder structure
+    public class Waits  
     {
         private readonly IWebDriver driver;
 
@@ -19,9 +19,9 @@ namespace PageObject
         public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
                         //and call the method of the class every time you need to log something
         {
-            get { return LogManager.GetLogger(this.GetType()); }
+            get { return LogManager.GetLogger(GetType()); }
         }
-        
+
 
         public void Wait(int seconds)
         {
