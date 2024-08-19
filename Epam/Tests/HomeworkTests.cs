@@ -44,7 +44,7 @@ namespace PageObject.Tests
         [TestCase("EPAM_Corporate_Overview_Q4_EOY.pdf")]
         public void DownloadCheck(string downloadedFileName)
         {
-            string downloadDirectory = SetUpFixture.AppSettings.DownloadDirectory;
+            string downloadDirectory = AppSettings.DownloadDirectory;
 
             navigation.AboutTab();
             about.DownloadOverviewFile();

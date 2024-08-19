@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace PageObject.Utilities
 {
-    internal class Screenshot //TODO: let's put Screenshot under PageObject.Utilities namespace/folder structure
+    internal class Screenshot
     {
         public static void TakeScreenshot(IWebDriver driver, string testName)
         {

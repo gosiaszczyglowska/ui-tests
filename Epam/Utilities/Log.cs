@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace PageObject.Utilities
 {
-    public class AppSettings
+    internal class Log
     {
-        public string DownloadDirectory { get; set; }
     }
 }

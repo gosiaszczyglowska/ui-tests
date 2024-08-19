@@ -12,6 +12,7 @@ using PageObject.Pages.Pages;
 using PageObject.Pages.Scripts;
 using PageObject.Core;
 using PageObject.Utilities;
+using Microsoft.Extensions.Configuration;
 
 
 namespace PageObject.Tests
@@ -36,13 +37,21 @@ namespace PageObject.Tests
         {
             get { return LogManager.GetLogger(GetType()); }
         }
+        public static AppSettings AppSettings { get; private set; }
 
-        [OneTimeSetUp] //TODO: OneTimeSetUp is called two times, first in SetUpFixture than here
-                       //instead use  one method in TestBase
+        [OneTimeSetUp] 
         public void BeforeAllTests()
         {
+            // Configure log4net
             XmlConfigurator.Configure(new FileInfo("Log.config"));
             Console.WriteLine($"Logs will be stored in: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")}");
+
+            // Load appsettings.json
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+            AppSettings = config.GetSection("AppSettings").Get<AppSettings>();
         }
 
         [SetUp]
@@ -52,7 +61,7 @@ namespace PageObject.Tests
         {
             string browserType = Environment.GetEnvironmentVariable("BROWSER_TYPE") ?? "chrome";
             bool headless = Environment.GetEnvironmentVariable("HEADLESS_MODE") == "true";
-            string downloadDirectory = SetUpFixture.AppSettings.DownloadDirectory;
+            string downloadDirectory = AppSettings.DownloadDirectory;
 
             driver = BrowserFactory.GetDriver(browserType, downloadDirectory, headless);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);

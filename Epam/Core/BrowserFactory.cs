@@ -9,8 +9,7 @@ namespace PageObject.Core
 {
     public static class BrowserFactory 
     {
-        public static IWebDriver GetDriver(string browserType, string downloadDirectory, bool headless) //TODO: the method can be split to smaller methods to increase readability
-                                                                                                        //example: private ReturnChrome method
+        public static IWebDriver GetDriver(string browserType, string downloadDirectory, bool headless) 
         {
 
             switch (browserType.ToLower())
@@ -19,30 +18,10 @@ namespace PageObject.Core
                     return ReturnChrome(downloadDirectory, headless);
 
                 case "firefox":
-                    var firefoxProfile = new FirefoxProfile();
-                    firefoxProfile.SetPreference("browser.download.folderList", 2);
-                    firefoxProfile.SetPreference("browser.download.dir", downloadDirectory);
-                    firefoxProfile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "application/pdf,application/octet-stream");
-
-                    var firefoxOptions = new FirefoxOptions { Profile = firefoxProfile };
-                    if (headless)
-                    {
-                        firefoxOptions.AddArgument("--headless");
-                    }
-                    return new FirefoxDriver(firefoxOptions);
-
+                    return ReturnFirefox(downloadDirectory, headless);
+                    
                 case "edge":
-                    var edgeOptions = new EdgeOptions();
-                    edgeOptions.AddUserProfilePreference("download.default_directory", downloadDirectory);
-                    edgeOptions.AddUserProfilePreference("download.prompt_for_download", false);
-                    if (headless)
-                    {
-                        edgeOptions.AddArgument("--headless");
-                        edgeOptions.AddArgument("--no-sandbox");
-                        edgeOptions.AddArgument("--disable-gpu");
-                        edgeOptions.AddArgument("--window-size=1920,1080");
-                    }
-                    return new EdgeDriver(edgeOptions);
+                    return ReturnEdge(downloadDirectory, headless);
 
                 default:
                     throw new ArgumentException("Unsupported browser type: " + browserType);
@@ -63,6 +42,34 @@ namespace PageObject.Core
                 chromeOptions.AddArgument("--window-size=1920,1080");
             }
             return new ChromeDriver(chromeOptions);
+        }
+        private static FirefoxDriver ReturnFirefox(string downloadDirectory, bool headless) 
+        {
+            var firefoxProfile = new FirefoxProfile();
+            firefoxProfile.SetPreference("browser.download.folderList", 2);
+            firefoxProfile.SetPreference("browser.download.dir", downloadDirectory);
+            firefoxProfile.SetPreference("browser.helperApps.neverAsk.saveToDisk", "application/pdf,application/octet-stream");
+
+            var firefoxOptions = new FirefoxOptions { Profile = firefoxProfile };
+            if (headless)
+            {
+                firefoxOptions.AddArgument("--headless");
+            }
+            return new FirefoxDriver(firefoxOptions);
+        }
+        private static EdgeDriver ReturnEdge(string downloadDirectory, bool headless) 
+        {
+            var edgeOptions = new EdgeOptions();
+            edgeOptions.AddUserProfilePreference("download.default_directory", downloadDirectory);
+            edgeOptions.AddUserProfilePreference("download.prompt_for_download", false);
+            if (headless)
+            {
+                edgeOptions.AddArgument("--headless");
+                edgeOptions.AddArgument("--no-sandbox");
+                edgeOptions.AddArgument("--disable-gpu");
+                edgeOptions.AddArgument("--window-size=1920,1080");
+            }
+            return new EdgeDriver(edgeOptions);
         }
     }
 }
