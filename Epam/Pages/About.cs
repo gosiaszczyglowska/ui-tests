@@ -6,7 +6,8 @@ using log4net;
 
 namespace PageObject.Pages
 {
-    public class About : TestBase
+    public class About : TestBase   //TODO: let's put all Pages under PageObject.Pages.Pages namespace/folder structure
+                                    //do not inherit TestBase here, instead inherit BrowserFactory (refer to the comment on [SetUp] in TestBase class)
     {
         public About(IWebDriver driver)
         {

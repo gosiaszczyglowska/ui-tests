@@ -4,13 +4,15 @@ using System.Configuration;
 
 namespace PageObject
 {
-    public class Scripts
+    public class Scripts //TODO: let's put Scripts under PageObject.Pages.Scripts namespace/folder structure
     {
         private readonly IWebDriver driver;
+
         public Scripts(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
 
         public readonly By autocompleteDropdownLocator = By.ClassName("autocomplete-suggestions");
-        public void closeAutocompleteDropdown()
+
+        public void CloseAutocompleteDropdown()
         {
             IWebElement autocompleteDropdown = driver.FindElement(autocompleteDropdownLocator);
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;

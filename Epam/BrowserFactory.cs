@@ -7,25 +7,16 @@ using System.Configuration;
 
 namespace PageObject
 {
-    public static class BrowserFactory
+    public static class BrowserFactory //TODO: let's put BrowserFactory under PageObject.Core namespace/folder structure
     {
-        public static IWebDriver GetDriver(string browserType, string downloadDirectory,bool headless)
+        public static IWebDriver GetDriver(string browserType, string downloadDirectory,bool headless) //TODO: the method can be split to smaller methods to increase readability
+                                                                                                       //example: private ReturnChrome method
         {
 
             switch (browserType.ToLower())
             {
                 case "chrome":
-                    var chromeOptions = new ChromeOptions();
-                    chromeOptions.AddUserProfilePreference("download.default_directory", downloadDirectory);
-                    chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
-                    if (headless)
-                    {
-                        chromeOptions.AddArgument("--headless");
-                        chromeOptions.AddArgument("--no-sandbox");
-                        chromeOptions.AddArgument("--disable-gpu");
-                        chromeOptions.AddArgument("--window-size=1920,1080");
-                    }
-                    return new ChromeDriver(chromeOptions);
+                    return ReturnChrome(downloadDirectory, headless);
 
                 case "firefox":
                     var firefoxProfile = new FirefoxProfile();
@@ -56,6 +47,21 @@ namespace PageObject
                 default:
                     throw new ArgumentException("Unsupported browser type: " + browserType);
             }
+        }
+
+        private static ChromeDriver ReturnChrome(string downloadDirectory, bool headless)
+        {
+            var chromeOptions = new ChromeOptions();
+            chromeOptions.AddUserProfilePreference("download.default_directory", downloadDirectory);
+            chromeOptions.AddUserProfilePreference("download.prompt_for_download", false);
+            if (headless)
+            {
+                chromeOptions.AddArgument("--headless");
+                chromeOptions.AddArgument("--no-sandbox");
+                chromeOptions.AddArgument("--disable-gpu");
+                chromeOptions.AddArgument("--window-size=1920,1080");
+            }
+            return new ChromeDriver(chromeOptions);
         }
     }
 }

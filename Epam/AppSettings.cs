@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace PageObject
 {
-    public class AppSettings
+    public class AppSettings //TODO: let's put AppSettings under PageObject.Utilities namespace/folder structure
     {
         public string DownloadDirectory { get; set; }
     }

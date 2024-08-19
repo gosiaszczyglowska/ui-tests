@@ -4,12 +4,12 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using System.Configuration;
 
-namespace PageObject
+namespace PageObject //TODO: divide classes by projects Tests, Utilities, Pages, Core
 {
 
     [TestFixture]
 
-    public class HomeworkTests : TestBase
+    public class HomeworkTests : TestBase  //TODO: let's put HomeworkTests under PageObject.Tests namespace/folder structure
     {
 
         [TestCase("Java", "All Locations")]
@@ -22,8 +22,9 @@ namespace PageObject
             careers.ApplyForFirstPosition();
 
             waits.Wait(5);
-            bool isLanguagePresent = careers.IsLanguagePresent(language);
-            
+            bool isLanguagePresent = careers.IsLanguagePresent(language); //TODO: lines 25 abd 28 do the same.
+                                                                          //instead create/reuse WaitUntilElementsArePresent method in Assert
+
             Log.Info("Verifying that searched programming language is present in the opened article");
             Assert.IsTrue(isLanguagePresent, $"Text {language} not found on the page.");
         }
@@ -54,7 +55,9 @@ namespace PageObject
 
             Assert.IsTrue(File.Exists(downloadedFilePath));
 
-            about.DeleteFile(downloadedFilePath);
+            about.DeleteFile(downloadedFilePath); //TODO: if Assert.IsTrue fails, this part of code will never be reached
+                                                  //instead use try catch finally or call DeleteFile in the teardown method
+                                                  //you can delete all files in the folder if you create your own folder
         }
 
 
@@ -68,7 +71,8 @@ namespace PageObject
             insights.CLickReadMoreOnActiveSlide();
             string titleElement = insights.GetTitleFromArticle();
 
-            Log.Info("Verifying that Slide Title is the same as Article Title");
+            Log.Info("Verifying that Slide Title is the same as Article Title"); //TODO: you can write the fail message inside Assert.True
+                                                                                 //Assert.True(slideText.Equals(titleElement), "Slide Title is not the same as Article Title");
             Assert.True(slideText.Equals(titleElement));
         }
 

@@ -9,7 +9,8 @@ using System.Configuration;
 
 namespace PageObject
 {
-    internal class Locators
+    internal class Locators //TODO: let's put Locators under PageObject.Pages.Locators namespace/folder structure
+                            //and put every class into their own file
     {
         public static class IndexPageLocators
         {

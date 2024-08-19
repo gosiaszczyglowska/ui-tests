@@ -22,7 +22,7 @@ namespace PageObject.Pages
         public void StepSearchPostition(string language, string location)
         {
             SearchKeyword(language);
-            scripts.closeAutocompleteDropdown();
+            scripts.CloseAutocompleteDropdown();
             SearchLocation(location);
             ClickRemoteCheckbox();
             ClickFindButton();
@@ -41,7 +41,7 @@ namespace PageObject.Pages
             locationsDropdown.Click();
 
             actions.SendKey(Keys.LeftControl);
-            var dropdownOption = driver.FindElement(By.XPath($"//li[contains(text(), '{location}')]"));
+            var dropdownOption = driver.FindElement(By.XPath($"//li[contains(text(), '{location}')]")); //TODO: move to locators
             dropdownOption.Click();
         }
         public void ClickRemoteCheckbox()

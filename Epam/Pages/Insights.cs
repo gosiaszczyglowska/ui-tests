@@ -32,7 +32,9 @@ namespace PageObject.Pages
             Console.WriteLine($"Text from the active slide: {slideText}");
             Console.WriteLine($"Text from the title: {titleElement}");
 
-            Assert.True(slideText.Equals(titleElement));
+            Assert.True(slideText.Equals(titleElement));//TODO: do not use Assert in PageObject
+                                                        //instead return titleElement to the test method
+                                                        //after that use Assert in the test method
         }
 
         public string GetTitleFromSlide()

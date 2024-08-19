@@ -8,7 +8,7 @@ using System.Configuration;
 namespace PageObject
 {
     [SetUpFixture]
-    public class SetUpFixture
+    public class SetUpFixture  //TODO: let's put SetUpFixture under PageObject.Tests namespace/folder structure
     {
         public static AppSettings AppSettings { get; private set; }
 

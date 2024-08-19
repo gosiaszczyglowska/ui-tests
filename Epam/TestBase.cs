@@ -8,11 +8,12 @@ using OpenQA.Selenium.Chrome;
 using PageObject.Pages;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using System.Configuration;
+using OpenQA.Selenium.DevTools.V124.Memory;
 
 
 namespace PageObject
 {
-    public class TestBase
+    public class TestBase  //TODO: let's put TestBase under PageObject.Tests namespace/folder structure
     {
 
         protected IWebDriver driver;
@@ -27,12 +28,14 @@ namespace PageObject
 
 
 
-        public ILog Log
+        public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
+                        //and call the method of the class every time you need to log something
         {
             get { return LogManager.GetLogger(this.GetType()); }
         }
 
-        [OneTimeSetUp]
+        [OneTimeSetUp] //TODO: OneTimeSetUp is called two times, first in SetUpFixture than here
+                       //instead use  one method in TestBase
         public void BeforeAllTests()
         {
         XmlConfigurator.Configure(new FileInfo("Log.config"));
@@ -40,7 +43,9 @@ namespace PageObject
         }
 
         [SetUp]
-        public void SetUp()
+        public void SetUp() //TODO: move driver creation to a BrowserFactory class
+                            //and inherit Pages from BrowserFactory class instead of TestBase class
+                            //example https://toolsqa.com/selenium-webdriver/c-sharp/browser-factory/
         {
             string browserType = Environment.GetEnvironmentVariable("BROWSER_TYPE") ?? "chrome";
             bool headless = Environment.GetEnvironmentVariable("HEADLESS_MODE") == "true";
@@ -70,7 +75,8 @@ namespace PageObject
             {
                 Screenshot.TakeScreenshot(driver, TestContext.CurrentContext.Test.Name);
             }
-            driver.Quit();
+            driver.Quit(); // add driver.Close();
+
         }
     }
 }

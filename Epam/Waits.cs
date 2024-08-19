@@ -10,13 +10,14 @@ using System.IO;
 
 namespace PageObject
 {
-    public class Waits
+    public class Waits  //TODO: let's put Waits under PageObject.Utilities namespace/folder structure
     {
         private readonly IWebDriver driver;
 
         public Waits(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
 
-        public ILog Log
+        public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
+                        //and call the method of the class every time you need to log something
         {
             get { return LogManager.GetLogger(this.GetType()); }
         }
@@ -29,11 +30,15 @@ namespace PageObject
 
         public IWebElement WaitUntilVisible(By locator, int time)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time)); //TODO: this line of code repeats multiple times
+                                                                                        //move it to the Wait method and return WebDriverWait object
+                                                                                        //the "WebDriverWait and ExpectedCondition" section might be useful to configure ExpectedCondition
+                                                                                        //https://www.lambdatest.com/blog/explicit-fluent-wait-in-selenium-c/
             return wait.Until(ExpectedConditions.ElementIsVisible(locator));
         }
 
-        public IWebElement WaitUntilClickable(By locator, int time)
+        public IWebElement WaitUntilClickable(By locator, int time) //TODO: have a default time value, so you don't have to provide it every time
+                                                                    //example WaitUntilClickable(By locator, int time = 20)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
             return wait.Until(ExpectedConditions.ElementToBeClickable(locator));

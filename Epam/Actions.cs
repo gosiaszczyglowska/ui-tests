@@ -3,12 +3,12 @@ using System;
 
 namespace PageObject
 {
-    public class Actions
+    public class Actions //TODO: let's put Actions under PageObject.Pages.Scripts namespace/folder structure
     {
         private readonly IWebDriver driver;
         public Actions(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
 
-        public void Click2Times(IWebElement element)
+        public void Click2Times(IWebElement element) //TODO: Rename to DoubleClick
         {
             new OpenQA.Selenium.Interactions.Actions(driver)
               .Click(element)
