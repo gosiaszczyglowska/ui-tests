@@ -4,7 +4,7 @@ using System.Configuration;
 
 namespace PageObject.Pages.Scripts
 {
-    public class SeleniumScripts //TODO: let's put Scripts under PageObject.Pages.Scripts namespace/folder structure
+    public class SeleniumScripts
     {
         private readonly IWebDriver driver;
 

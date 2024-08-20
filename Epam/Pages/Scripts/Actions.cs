@@ -3,7 +3,7 @@ using System;
 
 namespace PageObject.Pages.Scripts
 {
-    public class Actions //TODO: let's put Actions under PageObject.Pages.Scripts namespace/folder structure
+    public class Actions
     {
         private readonly IWebDriver driver;
         public Actions(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));

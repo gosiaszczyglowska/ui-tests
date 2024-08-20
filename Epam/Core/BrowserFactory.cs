@@ -4,9 +4,6 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
 using System;
 using PageObject.Utilities;
-using log4net.Config;
-using Microsoft.Extensions.Configuration;
-using System.IO;
 
 
 namespace PageObject.Core

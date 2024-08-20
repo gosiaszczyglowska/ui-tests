@@ -11,7 +11,6 @@ using PageObject.Pages.Scripts;
 namespace PageObject.Pages.Pages
 {
     public class About
-    //do not inherit TestBase here, instead inherit BrowserFactory (refer to the comment on [SetUp] in TestBase class)
     {
         private SeleniumScripts scripts;
         private Actions actions;

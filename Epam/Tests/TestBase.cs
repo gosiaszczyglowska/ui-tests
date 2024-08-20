@@ -15,11 +15,6 @@ namespace PageObject.Tests
         protected Insights insights;
         protected About about;
 
-        [OneTimeSetUp]
-        public void BeforeAllTests()
-        {
-        }
-
         [SetUp]
         public void SetUp()
         {
@@ -49,7 +44,7 @@ namespace PageObject.Tests
         {
             if (TestContext.CurrentContext.Result.Outcome.Status == NUnit.Framework.Interfaces.TestStatus.Failed)
             {
-                Utilities.Screenshot.TakeScreenshot(browserFactory.Driver, TestContext.CurrentContext.Test.Name);
+                Screenshot.TakeScreenshot(browserFactory.Driver, TestContext.CurrentContext.Test.Name);
             }
 
             browserFactory.CloseAndQuit();
