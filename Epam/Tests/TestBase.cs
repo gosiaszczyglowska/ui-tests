@@ -19,7 +19,6 @@ namespace PageObject.Tests
 {
     public class TestBase  
     {
-
         protected IWebDriver driver;
         protected IndexPage indexPage;
         protected Waits waits;
@@ -31,22 +30,23 @@ namespace PageObject.Tests
         protected Actions actions;
 
 
-
-/*        public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
-                        //and call the method of the class every time you need to log something
-        {
-            get { return LogManager.GetLogger(GetType()); }
-        }*/
         public static AppSettings AppSettings { get; private set; }
 
         [OneTimeSetUp] 
         public void BeforeAllTests()
         {
-            // Configure log4net
+            ConfigureLogging();
+            LoadConfiguration();
+        }
+        
+        private void ConfigureLogging()
+        {
             XmlConfigurator.Configure(new FileInfo("Log.config"));
             Console.WriteLine($"Logs will be stored in: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")}");
+        }
 
-            // Load appsettings.json
+        private void LoadConfiguration() 
+        {
             var config = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -59,6 +59,13 @@ namespace PageObject.Tests
                             //and inherit Pages from BrowserFactory class instead of TestBase class
                             //example https://toolsqa.com/selenium-webdriver/c-sharp/browser-factory/
         {
+            InitializeWebDriver();
+            InitializePageObjects();
+            PrepareTestEnvironment();
+        }
+
+        private void InitializeWebDriver() 
+        { 
             string browserType = Environment.GetEnvironmentVariable("BROWSER_TYPE") ?? "chrome";
             bool headless = Environment.GetEnvironmentVariable("HEADLESS_MODE") == "true";
             string downloadDirectory = AppSettings.DownloadDirectory;
@@ -66,7 +73,10 @@ namespace PageObject.Tests
             driver = BrowserFactory.GetDriver(browserType, downloadDirectory, headless);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
             driver.Manage().Window.Maximize();
+        }
 
+        private void InitializePageObjects() 
+        {
             indexPage = new IndexPage(driver);
             waits = new Waits(driver);
             navigation = new Navigation(driver);
@@ -75,7 +85,10 @@ namespace PageObject.Tests
             about = new About(driver);
             scripts = new Scripts(driver);
             actions = new Actions(driver);
+        }
 
+        private void PrepareTestEnvironment()
+        {
             indexPage.Open();
             indexPage.AcceptCookies();
         }
@@ -87,7 +100,8 @@ namespace PageObject.Tests
             {
                 Utilities.Screenshot.TakeScreenshot(driver, TestContext.CurrentContext.Test.Name);
             }
-            driver.Quit(); // add driver.Close();
+            driver.Close();
+            driver.Quit();
 
         }
     }
