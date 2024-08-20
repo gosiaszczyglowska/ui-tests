@@ -4,11 +4,11 @@ using System.Configuration;
 
 namespace PageObject.Pages.Scripts
 {
-    public class Scripts //TODO: let's put Scripts under PageObject.Pages.Scripts namespace/folder structure
+    public class SeleniumScripts //TODO: let's put Scripts under PageObject.Pages.Scripts namespace/folder structure
     {
         private readonly IWebDriver driver;
 
-        public Scripts(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
+        public SeleniumScripts(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
 
         public readonly By autocompleteDropdownLocator = By.ClassName("autocomplete-suggestions");
 

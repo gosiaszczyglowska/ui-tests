@@ -4,16 +4,20 @@ using PageObject.Tests;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using PageObject.Utilities;
+using PageObject.Pages.Scripts;
 
 namespace PageObject.Pages.Pages
 {
-    public class Insights : TestBase
+    public class Insights
     {
+        private Actions actions;
+        private Waits waits;
+        public IWebDriver driver { get; set; }
         public Insights(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
-            waits = new Utilities.Waits(driver);
-            actions = new Scripts.Actions(driver);
+            waits = new Waits(driver);
+            actions = new Actions(driver);
         }
 
         public void SwipeToTheThirdSlide()

@@ -6,18 +6,23 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using PageObject.Utilities;
+using PageObject.Pages.Scripts;
 
 
 namespace PageObject.Pages.Pages
 {
-    public class Careers : TestBase
+    public class Careers
     {
+        private SeleniumScripts scripts;
+        private Actions actions;
+        private Waits waits;
+        public IWebDriver driver { get; set; }
         public Careers(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
-            waits = new Utilities.Waits(driver);
-            scripts = new Scripts.Scripts(driver);
-            actions = new Scripts.Actions(driver);
+            waits = new Waits(driver);
+            scripts = new SeleniumScripts(driver);
+            actions = new Actions(driver);
         }
 
 

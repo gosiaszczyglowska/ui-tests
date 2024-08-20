@@ -13,30 +13,12 @@ namespace PageObject.Core
 {
     public class BrowserFactory
     {
-        protected IWebDriver Driver;
-        public static AppSettings AppSettings { get; private set; }
+        public IWebDriver Driver { get; set; }
 
-        public BrowserFactory(string downloadDirectory)
+        public BrowserFactory()
         {
-            Driver = InitializeWebDriver(downloadDirectory);
+            Driver = InitializeWebDriver(Configuration.LoadConfiguration().DownloadDirectory);
         }
-
-
-        public void ConfigureLogging()
-        {
-            XmlConfigurator.Configure(new FileInfo("Log.config"));
-            Console.WriteLine($"Logs will be stored in: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")}");
-        }
-
-        public void LoadConfiguration()
-        {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .Build();
-            AppSettings = config.GetSection("AppSettings").Get<AppSettings>();
-        }
-
 
         public IWebDriver InitializeWebDriver(string downloadDirectory)
         {

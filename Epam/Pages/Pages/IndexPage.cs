@@ -5,19 +5,29 @@ using PageObject.Tests;
 using System;
 using System.Linq;
 using PageObject.Utilities;
+using PageObject.Pages.Scripts;
 
 
 namespace PageObject.Pages.Pages
 {
-    public class IndexPage : TestBase
+    public class IndexPage
     {
+        private SeleniumScripts scripts;
+
+        private Actions actions;
+
+        public IWebDriver driver { get; set; }
+
+        private Waits waits;
+
         private static string Url { get; } = "https://www.epam.com";
 
         public IndexPage(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
-            actions = new Scripts.Actions(driver);
-            waits = new Utilities.Waits(driver);
+            scripts = new SeleniumScripts(driver);
+            actions = new Actions(driver);
+            waits = new Waits(driver);
         }
 
         public IndexPage Open()
