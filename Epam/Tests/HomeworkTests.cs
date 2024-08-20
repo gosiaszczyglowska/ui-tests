@@ -3,6 +3,7 @@ using log4net;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using System.Configuration;
+using PageObject.Utilities;
 
 namespace PageObject.Tests
 {
@@ -25,7 +26,7 @@ namespace PageObject.Tests
             bool isLanguagePresent = careers.IsLanguagePresent(language); //TODO: lines 25 abd 28 do the same.
                                                                           //instead create/reuse WaitUntilElementsArePresent method in Assert
 
-            Log.Info("Verifying that searched programming language is present in the opened article");
+            Log.LogInfo("Verifying that searched programming language is present in the opened article");
             Assert.IsTrue(isLanguagePresent, $"Text {language} not found on the page.");
         }
 
@@ -64,14 +65,14 @@ namespace PageObject.Tests
         [Test]
         public void TitleCheck()
         {
-            Log.Info("Running TitleCheck test");
+            Log.LogInfo("Running TitleCheck test");
             navigation.InsightsTab();
             insights.SwipeToTheThirdSlide();
             string slideText = insights.GetTitleFromSlide();
             insights.CLickReadMoreOnActiveSlide();
             string titleElement = insights.GetTitleFromArticle();
 
-            Log.Info("Verifying that Slide Title is the same as Article Title"); //TODO: you can write the fail message inside Assert.True
+            Log.LogInfo("Verifying that Slide Title is the same as Article Title"); //TODO: you can write the fail message inside Assert.True
                                                                                  //Assert.True(slideText.Equals(titleElement), "Slide Title is not the same as Article Title");
             Assert.True(slideText.Equals(titleElement));
         }

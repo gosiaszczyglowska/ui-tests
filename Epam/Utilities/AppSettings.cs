@@ -9,5 +9,6 @@ namespace PageObject.Utilities
     public class AppSettings
     {
         public string DownloadDirectory { get; set; }
+       
     }
 }

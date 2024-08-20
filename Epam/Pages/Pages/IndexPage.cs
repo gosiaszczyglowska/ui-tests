@@ -4,6 +4,7 @@ using OpenQA.Selenium.Support.UI;
 using PageObject.Tests;
 using System;
 using System.Linq;
+using PageObject.Utilities;
 
 
 namespace PageObject.Pages.Pages
@@ -27,7 +28,7 @@ namespace PageObject.Pages.Pages
 
         public void AcceptCookies()
         {
-            Log.Info("Accepting cookies...");
+            Log.LogInfo("Accepting cookies...");
             IWebElement acceptCookiesButton = waits.WaitForButtonOnToastNotification(Locators.IndexPageLocators.acceptCookiesButtonLocator);
             acceptCookiesButton.Click();
         }
@@ -35,7 +36,7 @@ namespace PageObject.Pages.Pages
 
         public void StepSearchQuery(string query)
         {
-            Log.Info($"Searching for a query {query}");
+            Log.LogInfo($"Searching for a query {query}");
             ClickSearchIcon();
             InputSearchQuery(query);
             ClickFindButton();
@@ -63,7 +64,7 @@ namespace PageObject.Pages.Pages
         public void StepValidateSearchResults(string query) //TODO: use word "Step", to indicate that this method is in fact a step, in the end of the method
                                                             //example ValidateSearchResultsStep
         {
-            Log.Info("Checking if all search results links contain query...");
+            Log.LogInfo("Checking if all search results links contain query...");
             var searchResultLinks = waits.WaitUntilElementsArePresent(Locators.IndexPageLocators.resultsLinksLocator, 10);
 
             var linksContainQuery = searchResultLinks.All(link =>
@@ -76,7 +77,7 @@ namespace PageObject.Pages.Pages
         }
         public bool CheckSearchResultsContainQuery(string query)
         {
-            Log.Info("Checking if all search results links contain query...");
+            Log.LogInfo("Checking if all search results links contain query...");
             var searchResultLinks = waits.WaitUntilElementsArePresent(Locators.IndexPageLocators.resultsLinksLocator, 10);
 
             return searchResultLinks.All(link =>

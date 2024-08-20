@@ -5,6 +5,7 @@ using PageObject.Tests;
 using System;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
+using PageObject.Utilities;
 
 
 namespace PageObject.Pages.Pages
@@ -61,7 +62,7 @@ namespace PageObject.Pages.Pages
 
         public void StepSortByDateAndVerify()
         {
-            Log.Info("Sorting Postitions by date...");
+            Log.LogInfo("Sorting Postitions by date...");
             string initialFirstItemTitle = driver.FindElement(Locators.CareersLocators.initialFirstItemTitleLocator).Text;
             Console.WriteLine($"Initial first item title is: {initialFirstItemTitle}");
             SortByDate();
@@ -78,7 +79,7 @@ namespace PageObject.Pages.Pages
 
         public void ApplyForFirstPosition()
         {
-            Log.Info("Opening details of the first position on the list...");
+            Log.LogInfo("Opening details of the first position on the list...");
             IWebElement resulItem1 = driver.FindElement(Locators.CareersLocators.resulItem1Locator);
             scripts.ScrollToElement(resulItem1);
             IWebElement viewAndApplyButton = resulItem1.FindElement(Locators.CareersLocators.viewAndApplyButtonLocator);
@@ -87,7 +88,7 @@ namespace PageObject.Pages.Pages
 
         public void VerifyIfSortingWasDone(string initialFirstItemTitle)
         {
-            Log.Info("Verifying if sorting was done...");
+            Log.LogInfo("Verifying if sorting was done...");
             WebDriverWait waitUntilSorted = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
             try
             {
@@ -100,15 +101,13 @@ namespace PageObject.Pages.Pages
 
                 if (!isSorted)
                 {
-                    Log.Info("Sorting was not done.");
+                    Log.LogInfo("Sorting was not done.");
                     Console.WriteLine("The list was not sorted within 3 seconds. Proceeding with the initial order.");
                 }
             }
             catch (WebDriverTimeoutException ex)
             {
-                Log.Error(ex);
-                Log.Info("It's the same position after sorting");
-                //Console.WriteLine("Its the same position after sorting");
+                Log.LogError("It's the same position after sorting", ex);
             }
 
         }

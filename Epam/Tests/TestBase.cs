@@ -32,11 +32,11 @@ namespace PageObject.Tests
 
 
 
-        public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
+/*        public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
                         //and call the method of the class every time you need to log something
         {
             get { return LogManager.GetLogger(GetType()); }
-        }
+        }*/
         public static AppSettings AppSettings { get; private set; }
 
         [OneTimeSetUp] 

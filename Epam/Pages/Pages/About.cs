@@ -4,6 +4,7 @@ using System.IO;
 using System.Threading;
 using log4net;
 using PageObject.Tests;
+using PageObject.Utilities;
 
 namespace PageObject.Pages.Pages
 {
@@ -21,7 +22,7 @@ namespace PageObject.Pages.Pages
 
         public void DownloadOverviewFile()
         {
-            Log.Info("Downloading Overview File...");
+            Log.LogInfo("Downloading Overview File...");
             var downloadButton = driver.FindElement(Locators.AboutLocators.downloadButtonLocator);
             scripts.ScrollToElement(downloadButton);
             downloadButton.Click();
@@ -34,21 +35,19 @@ namespace PageObject.Pages.Pages
             {
                 try
                 {
-                    Log.Info("Deleting file...");
+                    Log.LogInfo("Deleting file...");
                     File.Delete(downloadedFilePath);
-                    Log.Info("File deleted successfully");
+                    Log.LogInfo("File deleted successfully");
                 }
                 catch (Exception ex)
                 {
-                    //Console.WriteLine($"Failed to delete file: {ex.Message}");
-                    Log.Error(ex);
-                    Log.Info($"{ex.Message}");
+                    Log.LogError("Failed to delete file", ex);
+                    Log.LogInfo($"{ex.Message}");
                 }
             }
             else
             {
-                Log.Warn("File does not exist");
-                //Console.WriteLine("File does not exist.");
+                Log.LogWarn("File does not exist");
             }
         }
     }
