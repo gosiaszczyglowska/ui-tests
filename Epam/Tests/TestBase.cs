@@ -1,24 +1,20 @@
-﻿using System;
-using System.IO;
+﻿using log4net.Config;
+using Microsoft.Extensions.Configuration;
 using NUnit.Framework;
-using log4net;
-using log4net.Config;
 using OpenQA.Selenium;
-using OpenQA.Selenium.Chrome;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
-using System.Configuration;
-using OpenQA.Selenium.DevTools.V124.Memory;
+using PageObject.Core;
 using PageObject.Pages.Pages;
 using PageObject.Pages.Scripts;
-using PageObject.Core;
 using PageObject.Utilities;
-using Microsoft.Extensions.Configuration;
-
+using System.IO;
+using System;
+using PageObject.Core;
 
 namespace PageObject.Tests
 {
-    public class TestBase  
+    public class TestBase
     {
+        protected BrowserFactory browserFactory;
         protected IWebDriver driver;
         protected IndexPage indexPage;
         protected Waits waits;
@@ -29,53 +25,25 @@ namespace PageObject.Tests
         protected Scripts scripts;
         protected Actions actions;
 
-
         public static AppSettings AppSettings { get; private set; }
 
-        [OneTimeSetUp] 
+        [OneTimeSetUp]
         public void BeforeAllTests()
         {
-            ConfigureLogging();
-            LoadConfiguration();
-        }
-        
-        private void ConfigureLogging()
-        {
-            XmlConfigurator.Configure(new FileInfo("Log.config"));
-            Console.WriteLine($"Logs will be stored in: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")}");
-        }
-
-        private void LoadConfiguration() 
-        {
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .Build();
-            AppSettings = config.GetSection("AppSettings").Get<AppSettings>();
+            browserFactory.ConfigureLogging();
+            browserFactory.LoadConfiguration();
         }
 
         [SetUp]
-        public void SetUp() //TODO: move driver creation to a BrowserFactory class
-                            //and inherit Pages from BrowserFactory class instead of TestBase class
-                            //example https://toolsqa.com/selenium-webdriver/c-sharp/browser-factory/
+        public void SetUp()
         {
-            InitializeWebDriver();
+            browserFactory = new BrowserFactory(AppSettings.DownloadDirectory);
+            driver = browserFactory.InitializeWebDriver(AppSettings.DownloadDirectory);
             InitializePageObjects();
             PrepareTestEnvironment();
         }
 
-        private void InitializeWebDriver() 
-        { 
-            string browserType = Environment.GetEnvironmentVariable("BROWSER_TYPE") ?? "chrome";
-            bool headless = Environment.GetEnvironmentVariable("HEADLESS_MODE") == "true";
-            string downloadDirectory = AppSettings.DownloadDirectory;
-
-            driver = BrowserFactory.GetDriver(browserType, downloadDirectory, headless);
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
-            driver.Manage().Window.Maximize();
-        }
-
-        private void InitializePageObjects() 
+        private void InitializePageObjects()
         {
             indexPage = new IndexPage(driver);
             waits = new Waits(driver);
@@ -100,9 +68,8 @@ namespace PageObject.Tests
             {
                 Utilities.Screenshot.TakeScreenshot(driver, TestContext.CurrentContext.Test.Name);
             }
-            driver.Close();
-            driver.Quit();
 
+            browserFactory.CloseAndQuit();
         }
     }
 }

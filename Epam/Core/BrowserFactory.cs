@@ -3,15 +3,55 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
 using System;
-using System.Configuration;
+using PageObject.Utilities;
+using log4net.Config;
+using Microsoft.Extensions.Configuration;
+using System.IO;
+
 
 namespace PageObject.Core
 {
-    public static class BrowserFactory 
+    public class BrowserFactory
     {
-        public static IWebDriver GetDriver(string browserType, string downloadDirectory, bool headless) 
-        {
+        protected IWebDriver Driver;
+        public static AppSettings AppSettings { get; private set; }
 
+        public BrowserFactory(string downloadDirectory)
+        {
+            Driver = InitializeWebDriver(downloadDirectory);
+        }
+
+
+        public void ConfigureLogging()
+        {
+            XmlConfigurator.Configure(new FileInfo("Log.config"));
+            Console.WriteLine($"Logs will be stored in: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")}");
+        }
+
+        public void LoadConfiguration()
+        {
+            var config = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+            AppSettings = config.GetSection("AppSettings").Get<AppSettings>();
+        }
+
+
+        public IWebDriver InitializeWebDriver(string downloadDirectory)
+        {
+            string browserType = Environment.GetEnvironmentVariable("BROWSER_TYPE") ?? "chrome";
+            bool headless = Environment.GetEnvironmentVariable("HEADLESS_MODE") == "true";
+
+            var driver = GetDriver(browserType, downloadDirectory, headless);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Window.Maximize();
+
+            return driver;
+        }
+
+        public IWebDriver GetDriver(string browserType, string downloadDirectory, bool headless)
+        {
             switch (browserType.ToLower())
             {
                 case "chrome":
@@ -19,7 +59,7 @@ namespace PageObject.Core
 
                 case "firefox":
                     return ReturnFirefox(downloadDirectory, headless);
-                    
+
                 case "edge":
                     return ReturnEdge(downloadDirectory, headless);
 
@@ -28,7 +68,7 @@ namespace PageObject.Core
             }
         }
 
-        private static ChromeDriver ReturnChrome(string downloadDirectory, bool headless)
+        private ChromeDriver ReturnChrome(string downloadDirectory, bool headless)
         {
             var chromeOptions = new ChromeOptions();
             chromeOptions.AddUserProfilePreference("download.default_directory", downloadDirectory);
@@ -43,7 +83,8 @@ namespace PageObject.Core
             }
             return new ChromeDriver(chromeOptions);
         }
-        private static FirefoxDriver ReturnFirefox(string downloadDirectory, bool headless) 
+
+        private FirefoxDriver ReturnFirefox(string downloadDirectory, bool headless)
         {
             var firefoxProfile = new FirefoxProfile();
             firefoxProfile.SetPreference("browser.download.folderList", 2);
@@ -57,7 +98,8 @@ namespace PageObject.Core
             }
             return new FirefoxDriver(firefoxOptions);
         }
-        private static EdgeDriver ReturnEdge(string downloadDirectory, bool headless) 
+
+        private EdgeDriver ReturnEdge(string downloadDirectory, bool headless)
         {
             var edgeOptions = new EdgeOptions();
             edgeOptions.AddUserProfilePreference("download.default_directory", downloadDirectory);
@@ -70,6 +112,15 @@ namespace PageObject.Core
                 edgeOptions.AddArgument("--window-size=1920,1080");
             }
             return new EdgeDriver(edgeOptions);
+        }
+
+        public void CloseAndQuit()
+        {
+            if (Driver != null)
+            {
+                Driver.Close();
+                Driver.Quit();
+            }
         }
     }
 }
