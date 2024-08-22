@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using PageObject.Utilities;
 
 namespace PageObject.Utilities
 {
@@ -16,11 +17,11 @@ namespace PageObject.Utilities
 
         public Waits(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
 
-        public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
+/*        public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
                         //and call the method of the class every time you need to log something
         {
             get { return LogManager.GetLogger(GetType()); }
-        }
+        }*/
 
 
         public void Wait(int seconds)
@@ -37,12 +38,12 @@ namespace PageObject.Utilities
             return wait.Until(ExpectedConditions.ElementIsVisible(locator));
         }
 
-        public IWebElement WaitUntilClickable(By locator, int time) //TODO: have a default time value, so you don't have to provide it every time
+  /*      public IWebElement WaitUntilClickable(By locator, int time) //TODO: have a default time value, so you don't have to provide it every time
                                                                     //example WaitUntilClickable(By locator, int time = 20)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
             return wait.Until(ExpectedConditions.ElementToBeClickable(locator));
-        }
+        }*/
 
         public IReadOnlyCollection<IWebElement> WaitUntilElementsArePresent(By locator, int time)
         {
@@ -58,7 +59,7 @@ namespace PageObject.Utilities
 
         public IWebElement WaitForButtonOnToastNotification(By buttonLocator)
         {
-            Log.Info("Waiting for the Accept Cookies button on the toast notification...");
+            Log.LogInfo("Waiting for the Accept Cookies button on the toast notification...");
 
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
 
@@ -69,17 +70,17 @@ namespace PageObject.Utilities
                     IWebElement button = driver.FindElement(buttonLocator);
                     if (button.Displayed && button.Enabled)
                     {
-                        Log.Info("Accept Cookies button is visible and clickable.");
+                        Log.LogInfo("Accept Cookies button is visible and clickable.");
                         return button;
                     }
                     else
                     {
-                        Log.Debug("Accept Cookies button is not clickable yet.");
+                        Log.LogDebug("Accept Cookies button is not clickable yet.");
                     }
                 }
                 catch (NoSuchElementException)
                 {
-                    Log.Debug("Accept Cookies button not found, waiting...");
+                    Log.LogDebug("Accept Cookies button not found, waiting...");
                 }
                 return null;
             };

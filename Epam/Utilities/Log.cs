@@ -6,10 +6,9 @@ namespace PageObject.Utilities
 {
     public static class Log
     {
-        // Static logger instance
+
         private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        // Method to log info messages
         public static void LogInfo(string message)
         {
             if (Logger.IsInfoEnabled)
@@ -18,7 +17,6 @@ namespace PageObject.Utilities
             }
         }
 
-        // Method to log error messages with exception
         public static void LogError(string message, Exception ex)
         {
             if (Logger.IsErrorEnabled)
@@ -27,7 +25,6 @@ namespace PageObject.Utilities
             }
         }
 
-        // Method to log debug messages
         public static void LogDebug(string message)
         {
             if (Logger.IsDebugEnabled)
@@ -36,7 +33,6 @@ namespace PageObject.Utilities
             }
         }
 
-        // Add other logging methods as needed (e.g., Warn, Fatal)
         public static void LogWarn(string message)
         {
             if (Logger.IsWarnEnabled)

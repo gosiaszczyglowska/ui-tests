@@ -4,6 +4,7 @@ using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
 using System;
 using PageObject.Utilities;
+using System.IO;
 
 
 namespace PageObject.Core
@@ -91,6 +92,26 @@ namespace PageObject.Core
                 edgeOptions.AddArgument("--window-size=1920,1080");
             }
             return new EdgeDriver(edgeOptions);
+        }
+
+        public void DeleteAllFilesInDownloadDirectory()
+        {
+            string downloadDirectory = Configuration.LoadConfiguration().DownloadDirectory;
+
+            var files = Directory.GetFiles(downloadDirectory);
+
+            foreach (var file in files)
+            {
+                try
+                {
+                    File.Delete(file);
+                    Console.WriteLine($"Deleted file: {file}");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Failed to delete file: {file}. Exception: {ex.Message}");
+                }
+            }
         }
 
         public void CloseAndQuit()

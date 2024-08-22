@@ -4,6 +4,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using System.Configuration;
 using PageObject.Utilities;
+using System;
 
 namespace PageObject.Tests
 {
@@ -55,10 +56,6 @@ namespace PageObject.Tests
             waits.WaitForFileToDownload(downloadedFilePath, 30);
 
             Assert.IsTrue(File.Exists(downloadedFilePath));
-
-            about.DeleteFile(downloadedFilePath); //TODO: if Assert.IsTrue fails, this part of code will never be reached
-                                                  //instead use try catch finally or call DeleteFile in the teardown method
-                                                  //you can delete all files in the folder if you create your own folder
         }
 
 
@@ -72,9 +69,7 @@ namespace PageObject.Tests
             insights.CLickReadMoreOnActiveSlide();
             string titleElement = insights.GetTitleFromArticle();
 
-            Log.LogInfo("Verifying that Slide Title is the same as Article Title"); //TODO: you can write the fail message inside Assert.True
-                                                                                 //Assert.True(slideText.Equals(titleElement), "Slide Title is not the same as Article Title");
-            Assert.True(slideText.Equals(titleElement));
+            Assert.True(slideText.Equals(titleElement), "Verifying that Slide Title is the same as Article Title");
         }
 
         [Test]

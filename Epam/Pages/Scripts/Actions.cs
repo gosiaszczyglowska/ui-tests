@@ -8,7 +8,7 @@ namespace PageObject.Pages.Scripts
         private readonly IWebDriver driver;
         public Actions(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
 
-        public void Click2Times(IWebElement element) //TODO: Rename to DoubleClick
+        public void DoubleClick(IWebElement element)
         {
             new OpenQA.Selenium.Interactions.Actions(driver)
               .Click(element)

@@ -24,10 +24,10 @@ namespace PageObject.Pages.Pages
         {
             Log.LogInfo("Swipping to the 3rd slide");
             var sliderRightArrow = driver.FindElement(Locators.InsightsLocators.sliderRightArrowLocator);
-            actions.Click2Times(sliderRightArrow);
+            actions.DoubleClick(sliderRightArrow);
         }
 
-        public void StepReadArticleAndCompareTitles()
+        /*public void StepReadArticleAndCompareTitles()
         {
             Log.LogInfo("Comparing Title of the slide with the Title of the Article");
 
@@ -41,7 +41,7 @@ namespace PageObject.Pages.Pages
             Assert.True(slideText.Equals(titleElement));//TODO: do not use Assert in PageObject
                                                         //instead return titleElement to the test method
                                                         //after that use Assert in the test method
-        }
+        }*/
 
         public string GetTitleFromSlide()
         {

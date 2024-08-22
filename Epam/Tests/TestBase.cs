@@ -46,7 +46,8 @@ namespace PageObject.Tests
             {
                 Screenshot.TakeScreenshot(browserFactory.Driver, TestContext.CurrentContext.Test.Name);
             }
-
+            
+            browserFactory.DeleteAllFilesInDownloadDirectory();
             browserFactory.CloseAndQuit();
         }
     }

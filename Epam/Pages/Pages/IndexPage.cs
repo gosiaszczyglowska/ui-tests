@@ -71,20 +71,6 @@ namespace PageObject.Pages.Pages
             findButton.Click();
         }
 
-        public void StepValidateSearchResults(string query) //TODO: use word "Step", to indicate that this method is in fact a step, in the end of the method
-                                                            //example ValidateSearchResultsStep
-        {
-            Log.LogInfo("Checking if all search results links contain query...");
-            var searchResultLinks = waits.WaitUntilElementsArePresent(Locators.IndexPageLocators.resultsLinksLocator, 10);
-
-            var linksContainQuery = searchResultLinks.All(link =>
-                link.Text.Contains(query, StringComparison.OrdinalIgnoreCase) ||
-                link.GetAttribute("href").Contains(query, StringComparison.OrdinalIgnoreCase));
-
-            Assert.IsTrue(linksContainQuery, $"Not all links contain the query term '{query}'"); //TODO: do not use Assert in PageObject
-                                                                                                 //instead return false or null  if the element is not as expected to the test method
-                                                                                                 //after that use Assert in the test method
-        }
         public bool CheckSearchResultsContainQuery(string query)
         {
             Log.LogInfo("Checking if all search results links contain query...");
