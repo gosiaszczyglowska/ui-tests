@@ -26,23 +26,7 @@ namespace PageObject.Pages.Pages
             var sliderRightArrow = driver.FindElement(Locators.InsightsLocators.sliderRightArrowLocator);
             actions.DoubleClick(sliderRightArrow);
         }
-
-        /*public void StepReadArticleAndCompareTitles()
-        {
-            Log.LogInfo("Comparing Title of the slide with the Title of the Article");
-
-            string slideText = GetTitleFromSlide();
-            CLickReadMoreOnActiveSlide();
-            string titleElement = GetTitleFromArticle();
-
-            Console.WriteLine($"Text from the active slide: {slideText}");
-            Console.WriteLine($"Text from the title: {titleElement}");
-
-            Assert.True(slideText.Equals(titleElement));//TODO: do not use Assert in PageObject
-                                                        //instead return titleElement to the test method
-                                                        //after that use Assert in the test method
-        }*/
-
+       
         public string GetTitleFromSlide()
         {
             Log.LogInfo("Saving Slide Title as SLideTextElement...");

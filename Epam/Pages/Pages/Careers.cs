@@ -51,6 +51,7 @@ namespace PageObject.Pages.Pages
             var dropdownOption = driver.FindElement(By.XPath($"//li[contains(text(), '{location}')]")); //TODO: move to locators
             dropdownOption.Click();
         }
+
         public void ClickRemoteCheckbox()
         {
             IWebElement searchPanel = driver.FindElement(Locators.CareersLocators.searchPanelLocator);

@@ -17,12 +17,6 @@ namespace PageObject.Utilities
 
         public Waits(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
 
-/*        public ILog Log //TODO: create static Log class under PageObject.Utilities namespace/folder structure
-                        //and call the method of the class every time you need to log something
-        {
-            get { return LogManager.GetLogger(GetType()); }
-        }*/
-
 
         public void Wait(int seconds)
         {
@@ -37,13 +31,6 @@ namespace PageObject.Utilities
                                                                                         //https://www.lambdatest.com/blog/explicit-fluent-wait-in-selenium-c/
             return wait.Until(ExpectedConditions.ElementIsVisible(locator));
         }
-
-  /*      public IWebElement WaitUntilClickable(By locator, int time) //TODO: have a default time value, so you don't have to provide it every time
-                                                                    //example WaitUntilClickable(By locator, int time = 20)
-        {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
-            return wait.Until(ExpectedConditions.ElementToBeClickable(locator));
-        }*/
 
         public IReadOnlyCollection<IWebElement> WaitUntilElementsArePresent(By locator, int time)
         {
