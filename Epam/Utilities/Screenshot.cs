@@ -15,10 +15,18 @@ namespace PageObject.Utilities
     {
         public static void TakeScreenshot(IWebDriver driver, string testName)
         {
+            string screenshotsDirectory = Path.Combine(Environment.CurrentDirectory, "Screenshots");
+            
+            if (!Directory.Exists(screenshotsDirectory))
+            {
+                Directory.CreateDirectory(screenshotsDirectory);
+            }
+
             var screenshot = ((ITakesScreenshot)driver).GetScreenshot();
             string sanitizedTestName = SanitizeFileName(testName);
-            var screenshotPath = Path.Combine(Environment.CurrentDirectory, $"{sanitizedTestName}_{DateTime.Now:yyyyMMdd_HHmmss}.png"); //TODO: create a folder for screenshots, now it falls under
-                                                                                                                                        //C:\Users\[User]\source\repos\mentoring1\Epam\bin\Debug\net8.0
+            
+            var screenshotPath = Path.Combine(screenshotsDirectory, $"{sanitizedTestName}_{DateTime.Now:yyyyMMdd_HHmmss}.png"); 
+
             screenshot.SaveAsFile(screenshotPath);
             Console.WriteLine($"Screenshot saved to: {screenshotPath}");
         }
