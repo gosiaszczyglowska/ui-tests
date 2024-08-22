@@ -5,6 +5,7 @@ using OpenQA.Selenium;
 using System;
 using PageObject.Utilities;
 using System.IO;
+using log4net.Config;
 
 
 namespace PageObject.Core
@@ -92,6 +93,12 @@ namespace PageObject.Core
                 edgeOptions.AddArgument("--window-size=1920,1080");
             }
             return new EdgeDriver(edgeOptions);
+        }
+
+        public void ConfigureLogging()
+        {
+            XmlConfigurator.Configure(new FileInfo("Log.config"));
+            Console.WriteLine($"Logs will be stored in: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")}");
         }
 
         public void DeleteAllFilesInDownloadDirectory()

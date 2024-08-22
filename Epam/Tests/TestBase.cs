@@ -1,7 +1,10 @@
-﻿using NUnit.Framework;
+﻿using log4net.Config;
+using NUnit.Framework;
 using PageObject.Core;
 using PageObject.Pages.Pages;
 using PageObject.Utilities;
+using System.IO;
+using System;
 
 namespace PageObject.Tests
 {
@@ -19,6 +22,7 @@ namespace PageObject.Tests
         public void SetUp()
         {
             browserFactory = new BrowserFactory();
+            browserFactory.ConfigureLogging();
             InitializePageObjects();
             PrepareTestEnvironment();
         }
