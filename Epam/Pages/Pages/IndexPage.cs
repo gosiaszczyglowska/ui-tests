@@ -12,20 +12,17 @@ namespace PageObject.Pages.Pages
 {
     public class IndexPage
     {
-        private SeleniumScripts scripts;
-
-        private Actions actions;
+        private readonly Actions actions;
 
         public IWebDriver driver { get; set; }
 
-        private Waits waits;
+        private readonly Waits waits;
 
         private static string Url { get; } = "https://www.epam.com";
 
         public IndexPage(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
-            scripts = new SeleniumScripts(driver);
             actions = new Actions(driver);
             waits = new Waits(driver);
         }

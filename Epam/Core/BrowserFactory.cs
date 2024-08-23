@@ -16,7 +16,7 @@ namespace PageObject.Core
 
         public BrowserFactory()
         {
-            Driver = InitializeWebDriver(Configuration.LoadConfiguration().DownloadDirectory);
+            Driver = InitializeWebDriver(Configuration.Instance.GetAppSettings().DownloadDirectory);
         }
 
         public IWebDriver InitializeWebDriver(string downloadDirectory)
@@ -103,7 +103,7 @@ namespace PageObject.Core
 
         public void DeleteAllFilesInDownloadDirectory()
         {
-            string downloadDirectory = Configuration.LoadConfiguration().DownloadDirectory;
+            string downloadDirectory = Configuration.Instance.GetAppSettings().DownloadDirectory;
 
             var files = Directory.GetFiles(downloadDirectory);
 

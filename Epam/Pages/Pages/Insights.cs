@@ -10,8 +10,8 @@ namespace PageObject.Pages.Pages
 {
     public class Insights
     {
-        private Actions actions;
-        private Waits waits;
+        private readonly Actions actions;
+        private readonly Waits waits;
         public IWebDriver driver { get; set; }
         public Insights(IWebDriver driver)
         {

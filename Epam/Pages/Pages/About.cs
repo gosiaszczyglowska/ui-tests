@@ -12,15 +12,13 @@ namespace PageObject.Pages.Pages
 {
     public class About
     {
-        private SeleniumScripts scripts;
-        private Actions actions;
+        private readonly SeleniumScripts scripts;
         public IWebDriver driver { get; set; }
 
         public About(IWebDriver driver)
         {
             this.driver = driver ?? throw new ArgumentException(nameof(driver));
             scripts = new SeleniumScripts(driver);
-            actions = new Actions(driver);
         }
 
 
