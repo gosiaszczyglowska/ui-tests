@@ -1,14 +1,11 @@
 ﻿using OpenQA.Selenium;
 using System;
 using System.IO;
-using System.Threading;
-using log4net;
-using PageObject.Tests;
-using PageObject.Utilities;
-using PageObject.Core;
-using PageObject.Pages.Scripts;
+using PageObject.Core.Utilities;
+using PageObject.Business.Pages.Locators;
+using PageObject.Business.Pages.Scripts;
 
-namespace PageObject.Pages.Pages
+namespace PageObject.Business.Pages.Pages
 {
     public class About
     {
@@ -26,7 +23,7 @@ namespace PageObject.Pages.Pages
         public void DownloadOverviewFile()
         {
             Log.LogInfo("Downloading Overview File...");
-            var downloadButton = driver.FindElement(Locators.AboutLocators.downloadButtonLocator);
+            var downloadButton = driver.FindElement(AboutLocators.downloadButtonLocator);
             scripts.ScrollToElement(downloadButton);
             downloadButton.Click();
         }

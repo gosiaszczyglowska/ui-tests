@@ -1,10 +1,7 @@
-﻿using log4net.Config;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using PageObject.Core;
-using PageObject.Pages.Pages;
-using PageObject.Utilities;
-using System.IO;
-using System;
+using PageObject.Core.Utilities;
+using PageObject.Business.Pages.Pages;
 
 namespace PageObject.Tests
 {

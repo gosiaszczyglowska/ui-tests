@@ -1,13 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium.DevTools.V124.Network;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace PageObject.Utilities
+
+namespace PageObject.Core.Utilities
 {
     public class Configuration
     {
@@ -18,8 +13,8 @@ namespace PageObject.Utilities
         private Configuration()
         {
             var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+                .AddJsonFile("Core/appsettings.json", optional: false, reloadOnChange: true)
                 .Build();
             appSettings = config.GetSection("AppSettings").Get<AppSettings>();
         }
@@ -40,8 +35,8 @@ namespace PageObject.Utilities
         }
 
         public AppSettings GetAppSettings()
-        { 
-        return appSettings;
+        {
+            return appSettings;
         }
 
     }

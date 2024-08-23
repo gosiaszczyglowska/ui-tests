@@ -1,22 +1,16 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.Extensions;
+﻿using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
-namespace PageObject.Utilities
+namespace PageObject.Core.Utilities
 {
     internal class Screenshot
     {
         public static void TakeScreenshot(IWebDriver driver, string testName)
         {
             string screenshotsDirectory = Path.Combine(Environment.CurrentDirectory, "Screenshots");
-            
+
             if (!Directory.Exists(screenshotsDirectory))
             {
                 Directory.CreateDirectory(screenshotsDirectory);
@@ -24,8 +18,8 @@ namespace PageObject.Utilities
 
             var screenshot = ((ITakesScreenshot)driver).GetScreenshot();
             string sanitizedTestName = SanitizeFileName(testName);
-            
-            var screenshotPath = Path.Combine(screenshotsDirectory, $"{sanitizedTestName}_{DateTime.Now:yyyyMMdd_HHmmss}.png"); 
+
+            var screenshotPath = Path.Combine(screenshotsDirectory, $"{sanitizedTestName}_{DateTime.Now:yyyyMMdd_HHmmss}.png");
 
             screenshot.SaveAsFile(screenshotPath);
             Console.WriteLine($"Screenshot saved to: {screenshotPath}");

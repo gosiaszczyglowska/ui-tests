@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 
 
-namespace PageObject.Pages.Locators
+namespace PageObject.Business.Pages.Locators
 {
     public static class InsightsLocators
     {

@@ -1,14 +1,12 @@
-﻿using NUnit.Framework;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Support.UI;
-using PageObject.Tests;
+﻿using OpenQA.Selenium;
 using System;
 using System.Linq;
-using PageObject.Utilities;
-using PageObject.Pages.Scripts;
+using PageObject.Core.Utilities;
+using PageObject.Business.Pages.Locators;
+using PageObject.Business.Pages.Scripts;
 
 
-namespace PageObject.Pages.Pages
+namespace PageObject.Business.Pages.Pages
 {
     public class IndexPage
     {
@@ -36,7 +34,7 @@ namespace PageObject.Pages.Pages
         public void AcceptCookies()
         {
             Log.LogInfo("Accepting cookies...");
-            IWebElement acceptCookiesButton = waits.WaitForButtonOnToastNotification(Locators.IndexPageLocators.acceptCookiesButtonLocator);
+            IWebElement acceptCookiesButton = waits.WaitForButtonOnToastNotification(IndexPageLocators.acceptCookiesButtonLocator);
             acceptCookiesButton.Click();
         }
 
@@ -51,27 +49,27 @@ namespace PageObject.Pages.Pages
 
         public void ClickSearchIcon()
         {
-            var searchIcon = driver.FindElement(Locators.IndexPageLocators.searchIconLocator);
+            var searchIcon = driver.FindElement(IndexPageLocators.searchIconLocator);
             searchIcon.Click();
         }
         public void InputSearchQuery(string query)
         {
-            IWebElement searchPanel = waits.WaitUntilVisible(Locators.IndexPageLocators.searchPanelLocator, 5);
-            var searchInput = searchPanel.FindElement(Locators.IndexPageLocators.searchInputLocator);
+            IWebElement searchPanel = waits.WaitUntilVisible(IndexPageLocators.searchPanelLocator, 5);
+            var searchInput = searchPanel.FindElement(IndexPageLocators.searchInputLocator);
 
             actions.ClickAndSendKeys(searchInput, 1, query);
         }
         public void ClickFindButton()
         {
-            IWebElement searchPanel = waits.WaitUntilVisible(Locators.IndexPageLocators.searchPanelLocator, 5);
-            var findButton = searchPanel.FindElement(Locators.IndexPageLocators.findButtonLocator);
+            IWebElement searchPanel = waits.WaitUntilVisible(IndexPageLocators.searchPanelLocator, 5);
+            var findButton = searchPanel.FindElement(IndexPageLocators.findButtonLocator);
             findButton.Click();
         }
 
         public bool CheckSearchResultsContainQuery(string query)
         {
             Log.LogInfo("Checking if all search results links contain query...");
-            var searchResultLinks = waits.WaitUntilElementsArePresent(Locators.IndexPageLocators.resultsLinksLocator, 10);
+            var searchResultLinks = waits.WaitUntilElementsArePresent(IndexPageLocators.resultsLinksLocator, 10);
 
             return searchResultLinks.All(link =>
                 link.Text.Contains(query, StringComparison.OrdinalIgnoreCase) ||

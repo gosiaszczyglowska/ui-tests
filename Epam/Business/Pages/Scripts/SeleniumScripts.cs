@@ -1,8 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
-using System.Configuration;
 
-namespace PageObject.Pages.Scripts
+namespace PageObject.Business.Pages.Scripts
 {
     public class SeleniumScripts
     {

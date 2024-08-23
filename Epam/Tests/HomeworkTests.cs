@@ -1,10 +1,6 @@
 ﻿using System.IO;
-using log4net;
 using NUnit.Framework;
-using OpenQA.Selenium;
-using System.Configuration;
-using PageObject.Utilities;
-using System;
+using PageObject.Core.Utilities;
 
 namespace PageObject.Tests
 {
@@ -43,7 +39,7 @@ namespace PageObject.Tests
         [TestCase("EPAM_Corporate_Overview_Q4_EOY.pdf")]
         public void DownloadCheck(string downloadedFileName)
         {
-            string downloadDirectory = Utilities.Configuration.Instance.GetAppSettings().DownloadDirectory;
+            string downloadDirectory = Core.Utilities.Configuration.Instance.GetAppSettings().DownloadDirectory;
 
             navigation.AboutTab();
             about.DownloadOverviewFile();

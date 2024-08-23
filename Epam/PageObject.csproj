@@ -21,10 +21,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <None Update="appsettings.json">
+	  <None Update="Core\appsettings.json">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
-	  <None Update="Log.config">
+	  <None Update="Core\Log.config">
 	    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 	  </None>
 	</ItemGroup>

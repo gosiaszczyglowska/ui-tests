@@ -1,7 +1,8 @@
 ﻿using OpenQA.Selenium;
+using PageObject.Business.Pages.Locators;
 using System;
 
-namespace PageObject.Pages.Pages
+namespace PageObject.Business.Pages.Pages
 {
     public class Navigation
     {
@@ -13,17 +14,17 @@ namespace PageObject.Pages.Pages
 
         public void CareersTab()
         {
-            var careersTab = driver.FindElement(Locators.NavigationLocators.careersTabLocator);
+            var careersTab = driver.FindElement(NavigationLocators.careersTabLocator);
             careersTab.Click();
         }
         public void AboutTab()
         {
-            var careersTab = driver.FindElement(Locators.NavigationLocators.aboutTabLocator);
+            var careersTab = driver.FindElement(NavigationLocators.aboutTabLocator);
             careersTab.Click();
         }
         public void InsightsTab()
         {
-            var careersTab = driver.FindElement(Locators.NavigationLocators.insightsTabLocator);
+            var careersTab = driver.FindElement(NavigationLocators.insightsTabLocator);
             careersTab.Click();
         }
     }

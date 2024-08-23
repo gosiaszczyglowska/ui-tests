@@ -1,17 +1,13 @@
-﻿using log4net;
-using OpenQA.Selenium;
-using OpenQA.Selenium.DevTools.V124.Network;
+﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using SeleniumExtras.WaitHelpers;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
-using PageObject.Utilities;
 
-namespace PageObject.Utilities
+namespace PageObject.Core.Utilities
 {
-    public class Waits  
+    public class Waits
     {
         private readonly IWebDriver driver;
 

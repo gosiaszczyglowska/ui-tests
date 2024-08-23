@@ -3,9 +3,9 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium;
 using System;
-using PageObject.Utilities;
 using System.IO;
 using log4net.Config;
+using PageObject.Core.Utilities;
 
 
 namespace PageObject.Core
@@ -97,7 +97,7 @@ namespace PageObject.Core
 
         public void ConfigureLogging()
         {
-            XmlConfigurator.Configure(new FileInfo("Log.config"));
+            XmlConfigurator.Configure(new FileInfo(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Core", "Log.config")));
             Console.WriteLine($"Logs will be stored in: {Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs")}");
         }
 

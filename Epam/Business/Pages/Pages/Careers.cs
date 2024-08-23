@@ -1,15 +1,12 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.DevTools.V124.Network;
 using OpenQA.Selenium.Support.UI;
-using PageObject.Tests;
 using System;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading;
-using PageObject.Utilities;
-using PageObject.Pages.Scripts;
+using PageObject.Core.Utilities;
+using PageObject.Business.Pages.Locators;
+using PageObject.Business.Pages.Scripts;
 
 
-namespace PageObject.Pages.Pages
+namespace PageObject.Business.Pages.Pages
 {
     public class Careers
     {
@@ -36,15 +33,15 @@ namespace PageObject.Pages.Pages
         }
         public void SearchKeyword(string language)
         {
-            IWebElement searchPanel = driver.FindElement(Locators.CareersLocators.searchPanelLocator);
-            IWebElement keywordField = searchPanel.FindElement(Locators.CareersLocators.keywordFieldLocator);
+            IWebElement searchPanel = driver.FindElement(CareersLocators.searchPanelLocator);
+            IWebElement keywordField = searchPanel.FindElement(CareersLocators.keywordFieldLocator);
             keywordField.Click();
             keywordField.SendKeys(language);
         }
         public void SearchLocation(string location)
         {
-            IWebElement searchPanel = driver.FindElement(Locators.CareersLocators.searchPanelLocator);
-            IWebElement locationsDropdown = searchPanel.FindElement(Locators.CareersLocators.locationsDropdownLocator);
+            IWebElement searchPanel = driver.FindElement(CareersLocators.searchPanelLocator);
+            IWebElement locationsDropdown = searchPanel.FindElement(CareersLocators.locationsDropdownLocator);
             locationsDropdown.Click();
 
             actions.SendKey(Keys.LeftControl);
@@ -54,41 +51,41 @@ namespace PageObject.Pages.Pages
 
         public void ClickRemoteCheckbox()
         {
-            IWebElement searchPanel = driver.FindElement(Locators.CareersLocators.searchPanelLocator);
-            IWebElement remoteCheckbox = searchPanel.FindElement(Locators.CareersLocators.remoteCheckboxLocator);
+            IWebElement searchPanel = driver.FindElement(CareersLocators.searchPanelLocator);
+            IWebElement remoteCheckbox = searchPanel.FindElement(CareersLocators.remoteCheckboxLocator);
             remoteCheckbox.Click();
         }
 
         public void ClickFindButton()
         {
-            IWebElement searchPanel = driver.FindElement(Locators.CareersLocators.searchPanelLocator);
-            IWebElement findButton = searchPanel.FindElement(Locators.CareersLocators.findButtonLocator);
+            IWebElement searchPanel = driver.FindElement(CareersLocators.searchPanelLocator);
+            IWebElement findButton = searchPanel.FindElement(CareersLocators.findButtonLocator);
             findButton.Click();
         }
 
         public void StepSortByDateAndVerify()
         {
             Log.LogInfo("Sorting Postitions by date...");
-            string initialFirstItemTitle = driver.FindElement(Locators.CareersLocators.initialFirstItemTitleLocator).Text;
+            string initialFirstItemTitle = driver.FindElement(CareersLocators.initialFirstItemTitleLocator).Text;
             Console.WriteLine($"Initial first item title is: {initialFirstItemTitle}");
             SortByDate();
             VerifyIfSortingWasDone(initialFirstItemTitle);
-            string newFirstItemTitle = driver.FindElement(Locators.CareersLocators.newFirstItemTitleLocator).Text;
+            string newFirstItemTitle = driver.FindElement(CareersLocators.newFirstItemTitleLocator).Text;
             Console.WriteLine($"First item title after sorting is: {newFirstItemTitle}");
         }
 
         public void SortByDate()
         {
-            IWebElement sortByDate = waits.WaitUntilVisible(Locators.CareersLocators.sortByDateLocator, 5);
+            IWebElement sortByDate = waits.WaitUntilVisible(CareersLocators.sortByDateLocator, 5);
             sortByDate.Click();
         }
 
         public void ApplyForFirstPosition()
         {
             Log.LogInfo("Opening details of the first position on the list...");
-            IWebElement resulItem1 = driver.FindElement(Locators.CareersLocators.resulItem1Locator);
+            IWebElement resulItem1 = driver.FindElement(CareersLocators.resulItem1Locator);
             scripts.ScrollToElement(resulItem1);
-            IWebElement viewAndApplyButton = resulItem1.FindElement(Locators.CareersLocators.viewAndApplyButtonLocator);
+            IWebElement viewAndApplyButton = resulItem1.FindElement(CareersLocators.viewAndApplyButtonLocator);
             viewAndApplyButton.Click();
         }
 
@@ -100,7 +97,7 @@ namespace PageObject.Pages.Pages
             {
                 bool isSorted = waitUntilSorted.Until(driver =>
                 {
-                    string newFirstItemTitle = driver.FindElement(Locators.CareersLocators.newFirstItemTitleLocator).Text;
+                    string newFirstItemTitle = driver.FindElement(CareersLocators.newFirstItemTitleLocator).Text;
 
                     return newFirstItemTitle != initialFirstItemTitle;
                 });

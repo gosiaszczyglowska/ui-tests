@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace PageObject.Utilities
+namespace PageObject.Core.Utilities
 {
     public static class Log
     {

@@ -1,7 +1,7 @@
 ﻿using OpenQA.Selenium;
 using System;
 
-namespace PageObject.Pages.Scripts
+namespace PageObject.Business.Pages.Scripts
 {
     public class Actions
     {
