@@ -23,11 +23,7 @@ namespace PageObject.Tests
             careers.StepSortByDateAndVerify();
             careers.ApplyForFirstPosition();
 
-            waits.Wait(5);
-            
-            //bool isLanguagePresent = careers.IsLanguagePresent(language); //TODO: lines 25 abd 28 do the same.
-                                                                          //instead create/reuse WaitUntilElementsArePresent method in Assert
-
+            waits.Wait(5);                 
             Log.LogInfo("Verifying that searched programming language is present in the opened article");
             Assert.IsTrue(careers.IsLanguagePresent(language), $"Text {language} not found on the page.");
         }

@@ -18,29 +18,26 @@ namespace PageObject.Utilities
         public Waits(IWebDriver driver) => this.driver = driver ?? throw new ArgumentException(nameof(driver));
 
 
-        public void Wait(int seconds)
+        public WebDriverWait Wait(int time)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(seconds));
+            return new WebDriverWait(driver, TimeSpan.FromSeconds(time));
         }
 
         public IWebElement WaitUntilVisible(By locator, int time)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time)); //TODO: this line of code repeats multiple times
-                                                                                        //move it to the Wait method and return WebDriverWait object
-                                                                                        //the "WebDriverWait and ExpectedCondition" section might be useful to configure ExpectedCondition
-                                                                                        //https://www.lambdatest.com/blog/explicit-fluent-wait-in-selenium-c/
+            var wait = Wait(time);                                                                                                                                       //https://www.lambdatest.com/blog/explicit-fluent-wait-in-selenium-c/
             return wait.Until(ExpectedConditions.ElementIsVisible(locator));
         }
 
         public IReadOnlyCollection<IWebElement> WaitUntilElementsArePresent(By locator, int time)
         {
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(time));
+            var wait = Wait(time);
             return wait.Until(driver => driver.FindElements(locator));
         }
 
-        public bool WaitForFileToDownload(string filePath, int timeoutInSeconds)
+        public bool WaitForFileToDownload(string filePath, int time)
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(timeoutInSeconds));
+            var wait = Wait(time);
             return wait.Until(d => File.Exists(filePath));
         }
 
@@ -58,6 +55,7 @@ namespace PageObject.Utilities
                     if (button.Displayed && button.Enabled)
                     {
                         Log.LogInfo("Accept Cookies button is visible and clickable.");
+                        Wait(3);
                         return button;
                     }
                     else
