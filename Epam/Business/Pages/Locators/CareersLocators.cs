@@ -15,5 +15,10 @@ namespace PageObject.Business.Pages.Locators
         public static readonly By newFirstItemTitleLocator = By.XPath("//*[@id='main']//ul/li[1]//h5/a");
         public static readonly By resulItem1Locator = By.XPath("//*[@id='main']//ul/li[1]");
         public static readonly By viewAndApplyButtonLocator = By.XPath("//a[contains(text(), 'View and apply')]");
+        public static By GetLocationDropdownOptionLocator(string location) 
+        { 
+        return By.XPath($"//li[contains(text(), '{location}')]");
+        }
+    
     }
 }

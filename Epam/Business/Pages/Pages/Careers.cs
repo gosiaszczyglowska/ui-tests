@@ -38,6 +38,7 @@ namespace PageObject.Business.Pages.Pages
             keywordField.Click();
             keywordField.SendKeys(language);
         }
+
         public void SearchLocation(string location)
         {
             IWebElement searchPanel = driver.FindElement(CareersLocators.searchPanelLocator);
@@ -45,8 +46,9 @@ namespace PageObject.Business.Pages.Pages
             locationsDropdown.Click();
 
             actions.SendKey(Keys.LeftControl);
-            var dropdownOption = driver.FindElement(By.XPath($"//li[contains(text(), '{location}')]")); //TODO: move to locators
-            dropdownOption.Click();
+            By locationDropdownOptionLocator = CareersLocators.GetLocationDropdownOptionLocator(location);
+            IWebElement locationDropdownOption = driver.FindElement(locationDropdownOptionLocator);
+            locationDropdownOption.Click();
         }
 
         public void ClickRemoteCheckbox()

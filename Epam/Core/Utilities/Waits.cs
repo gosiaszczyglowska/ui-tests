@@ -21,13 +21,13 @@ namespace PageObject.Core.Utilities
 
         public IWebElement WaitUntilVisible(By locator, int time)
         {
-            var wait = Wait(time);                                                                                                                                       //https://www.lambdatest.com/blog/explicit-fluent-wait-in-selenium-c/
+            var wait = Wait(time);
             return wait.Until(ExpectedConditions.ElementIsVisible(locator));
         }
 
         public IWebElement WaitUntilClickable(By locator, int time) 
         {
-            var wait = Wait(time);                                                                                                                                       //https://www.lambdatest.com/blog/explicit-fluent-wait-in-selenium-c/
+            var wait = Wait(time); 
             return wait.Until(ExpectedConditions.ElementToBeClickable(locator));
         }
 
