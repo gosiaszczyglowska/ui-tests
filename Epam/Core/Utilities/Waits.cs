@@ -25,6 +25,12 @@ namespace PageObject.Core.Utilities
             return wait.Until(ExpectedConditions.ElementIsVisible(locator));
         }
 
+        public IWebElement WaitUntilClickable(By locator, int time) 
+        {
+            var wait = Wait(time);                                                                                                                                       //https://www.lambdatest.com/blog/explicit-fluent-wait-in-selenium-c/
+            return wait.Until(ExpectedConditions.ElementToBeClickable(locator));
+        }
+
         public IReadOnlyCollection<IWebElement> WaitUntilElementsArePresent(By locator, int time)
         {
             var wait = Wait(time);
@@ -36,39 +42,5 @@ namespace PageObject.Core.Utilities
             var wait = Wait(time);
             return wait.Until(d => File.Exists(filePath));
         }
-
-        public IWebElement WaitForButtonOnToastNotification(By buttonLocator)
-        {
-            Log.LogInfo("Waiting for the Accept Cookies button on the toast notification...");
-
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(30));
-
-            Func<IWebDriver, IWebElement> waitForButton = (driver) =>
-            {
-                try
-                {
-                    IWebElement button = driver.FindElement(buttonLocator);
-                    if (button.Displayed && button.Enabled)
-                    {
-                        Log.LogInfo("Accept Cookies button is visible and clickable.");
-                        Wait(3);
-                        return button;
-                    }
-                    else
-                    {
-                        Log.LogDebug("Accept Cookies button is not clickable yet.");
-                    }
-                }
-                catch (NoSuchElementException)
-                {
-                    Log.LogDebug("Accept Cookies button not found, waiting...");
-                }
-                return null;
-            };
-
-            return wait.Until(waitForButton);
-        }
-
-
     }
 }

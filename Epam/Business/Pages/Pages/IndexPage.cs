@@ -1,4 +1,5 @@
 ﻿using OpenQA.Selenium;
+
 using System;
 using System.Linq;
 using PageObject.Core.Utilities;
@@ -34,10 +35,28 @@ namespace PageObject.Business.Pages.Pages
         public void AcceptCookies()
         {
             Log.LogInfo("Accepting cookies...");
-            IWebElement acceptCookiesButton = waits.WaitForButtonOnToastNotification(IndexPageLocators.acceptCookiesButtonLocator);
+            IWebElement acceptCookiesButton = FindAcceptCookiesButton();
             acceptCookiesButton.Click();
         }
 
+
+        public IWebElement FindAcceptCookiesButton()
+        {
+            Log.LogInfo("Waiting for the Accept Cookies button on the toast notification...");
+
+            try
+            {
+                waits.WaitUntilVisible(IndexPageLocators.cookiePopUpLocator, 30);
+                IWebElement acceptButton = waits.WaitUntilClickable(IndexPageLocators.acceptAllLocator, 30);
+
+                return acceptButton;
+            }
+            catch (WebDriverTimeoutException ex)
+            {
+                Log.LogError("The cookie popup or Accept All button did not appear within the expected time.", ex);
+                throw;
+            }
+        }
 
         public void StepSearchQuery(string query)
         {
