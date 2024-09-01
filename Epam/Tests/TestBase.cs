@@ -48,7 +48,8 @@ namespace PageObject.Tests
                 Screenshot.TakeScreenshot(browserFactory.Driver, TestContext.CurrentContext.Test.Name);
             }
             
-            browserFactory.DeleteAllFilesInDownloadDirectory();
+            browserFactory.DeleteAllFilesInDownloadDirectory(); //TODO: This should not be in browserFactory
+                                                                //Instead create a Files class and move all fales related actions there, including the ones  in the tests
             browserFactory.CloseAndQuit();
         }
     }

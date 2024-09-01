@@ -19,7 +19,7 @@ namespace PageObject.Tests
             careers.StepSortByDateAndVerify();
             careers.ApplyForFirstPosition();
 
-            waits.Wait(5);                 
+            waits.Wait(5);                 //TODO: this menhod is not waiting, it Initializes a new instance of WebDriverWait class
             Log.LogInfo("Verifying that searched programming language is present in the opened article");
             Assert.IsTrue(careers.IsLanguagePresent(language), $"Text {language} not found on the page.");
         }
