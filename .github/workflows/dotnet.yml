@@ -20,7 +20,7 @@ on:
      options:
       - chrome
       - firefox
-       -edge
+      - edge
 
 jobs:
   build:
