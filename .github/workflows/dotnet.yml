@@ -63,6 +63,10 @@ jobs:
         sudo wget https://packages.microsoft.com/config/ubuntu/$(lsb_release -cs)/prod.list -O /etc/apt/sources.list.d/microsoft-prod.list
         sudo apt-get update
         sudo apt-get install -y microsoft-edge-stable
+
+    - name: Set Browser Environment Variable
+      run: |
+        echo "BROWSER_TYPE=${{ github.event.inputs.browser }}" >> $GITHUB_ENV
    
     
     - name: Run UI Tests
@@ -71,7 +75,7 @@ jobs:
         dotnet test --no-build --verbosity normal --filter Browser=${{ github.event.inputs.browser }}
 
 
-    - name: Upload API test results
+    - name: Upload UI test results
       uses: actions/upload-artifact@v3
       with:
         name: ui-test-results
