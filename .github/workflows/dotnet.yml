@@ -11,6 +11,16 @@ on:
     - cron: '00 14 * * *'
 
   workflow_dispatch:
+   inputs:
+    browser:
+     description: 'Chose the browser to run UI tests'
+     required: true
+     default: 'chrome'
+     type: choice
+     options:
+      - chrome
+      - firefox
+       -edge
 
 jobs:
   build:
@@ -31,9 +41,35 @@ jobs:
       
     - name: Build
       run: dotnet build --no-restore
-      
-    - name: Test
-      run: dotnet test --no-build --verbosity normal
+
+    - name: Install Browser
+      if: ${{ github.event.inputs.browser == 'chrome' }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable
+
+    - name: Install Browser
+      if: ${{ github.event.inputs.browser == 'firefox' }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y firefox
+
+    - name: Install Browser
+      if: ${{ github.event.inputs.browser == 'edge' }}
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget
+        wget https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+        sudo wget https://packages.microsoft.com/config/ubuntu/$(lsb_release -cs)/prod.list -O /etc/apt/sources.list.d/microsoft-prod.list
+        sudo apt-get update
+        sudo apt-get install -y microsoft-edge-stable
+   
+    
+    - name: Run UI Tests
+      run: |
+        echo "Running UI tests on ${{ github.event.inputs.browser }}"
+        dotnet test --no-build --verbosity normal --filter Browser=${{ github.event.inputs.browser }}
+
 
     - name: Upload API test results
       uses: actions/upload-artifact@v3
