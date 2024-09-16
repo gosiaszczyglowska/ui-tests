@@ -49,7 +49,7 @@ namespace PageObject.Tests
             }
             
             browserFactory.DeleteAllFilesInDownloadDirectory(); //TODO: This should not be in browserFactory
-                                                                //Instead create a Files class and move all fales related actions there, including the ones  in the tests
+                                                                //Instead create a Files (utilites)class and move all fales related actions there, including the ones  in the tests
             browserFactory.CloseAndQuit();
         }
     }

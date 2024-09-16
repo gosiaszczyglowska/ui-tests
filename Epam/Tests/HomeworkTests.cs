@@ -19,7 +19,7 @@ namespace PageObject.Tests
             careers.StepSortByDateAndVerify();
             careers.ApplyForFirstPosition();
 
-            waits.Wait(5);                 //TODO: this menhod is not waiting, it Initializes a new instance of WebDriverWait class
+            waits.Wait(5);                 //-to removeTODO: this menhod is not waiting, it Initializes a new instance of WebDriverWait class
             Log.LogInfo("Verifying that searched programming language is present in the opened article");
             Assert.IsTrue(careers.IsLanguagePresent(language), $"Text {language} not found on the page.");
         }
@@ -39,7 +39,7 @@ namespace PageObject.Tests
         [TestCase("EPAM_Corporate_Overview_Q4_EOY.pdf")]
         public void DownloadCheck(string downloadedFileName)
         {
-            string downloadDirectory = Core.Utilities.Configuration.Instance.GetAppSettings().DownloadDirectory;
+            string downloadDirectory = Core.Utilities.Configuration.Instance.GetAppSettings().DownloadDirectory;//move it to (static class) files
 
             navigation.AboutTab();
             about.DownloadOverviewFile();
